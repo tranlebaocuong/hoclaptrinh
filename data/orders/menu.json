@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1,
+    "name": "Trà sữa truyền thống",
+    "base_price": 25000,
+    "category": "Trà sữa"
+  },
+  {
+    "id": 2,
+    "name": "Trà sữa trân châu",
+    "base_price": 29000,
+    "category": "Trà sữa"
+  },
+  {
+    "id": 3,
+    "name": "Trà sữa matcha",
+    "base_price": 32000,
+    "category": "Trà sữa"
+  },
+  {
+    "id": 4,
+    "name": "Trà sữa khoai môn",
+    "base_price": 30000,
+    "category": "Trà sữa"
+  },
+  {
+    "id": 5,
+    "name": "Trà sữa oolong",
+    "base_price": 28000,
+    "category": "Trà sữa"
+  },
+  {
+    "id": 6,
+    "name": "Hồng trà",
+    "base_price": 22000,
+    "category": "Trà trái cây"
+  },
+  {
+    "id": 7,
+    "name": "Trà đào cam sả",
+    "base_price": 29000,
+    "category": "Trà trái cây"
+  },
+  {
+    "id": 8,
+    "name": "Trà vải",
+    "base_price": 28000,
+    "category": "Trà trái cây"
+  },
+  {
+    "id": 9,
+    "name": "Trà chanh dây",
+    "base_price": 27000,
+    "category": "Trà trái cây"
+  },
+  {
+    "id": 10,
+    "name": "Matcha latte",
+    "base_price": 35000,
+    "category": "Đặc biệt"
+  },
+  {
+    "id": 11,
+    "name": "Oolong nướng",
+    "base_price": 33000,
+    "category": "Đặc biệt"
+  },
+  {
+    "id": 12,
+    "name": "Cà phê sữa đá",
+    "base_price": 29000,
+    "category": "Cà phê"
+  },
+  {
+    "id": 13,
+    "name": "Bạc xỉu",
+    "base_price": 27000,
+    "category": "Cà phê"
+  },
+  {
+    "id": 14,
+    "name": "Cà phê đen đá",
+    "base_price": 25000,
+    "category": "Cà phê"
+  },
+  {
+    "id": 15,
+    "name": "Cà phê muối",
+    "base_price": 32000,
+    "category": "Cà phê"
+  }
+]

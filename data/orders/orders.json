@@ -1,0 +1,71 @@
+[
+    {
+        "id": "ORD001",
+        "items": [
+            {
+                "id": 2,
+                "name": "Trà sữa trân châu",
+                "base_price": 29000,
+                "size": "M",
+                "sugar": 100,
+                "ice": 100,
+                "topping": "Trân châu"
+            },
+            {
+                "id": 10,
+                "name": "Matcha latte",
+                "base_price": 35000,
+                "size": "L",
+                "sugar": 75,
+                "ice": 100
+            }
+        ]
+    },
+    {
+        "id": "ORD002",
+        "items": [
+            {
+                "id": 12,
+                "name": "Cà phê sữa đá",
+                "base_price": 29000,
+                "size": "L",
+                "sugar": 100,
+                "ice": 0
+            },
+            {
+                "id": 7,
+                "name": "Trà đào cam sả",
+                "base_price": 29000,
+                "size": "M",
+                "sugar": 50,
+                "ice": 75
+            },
+            {
+                "id": 1,
+                "name": "Trà sữa truyền thống",
+                "base_price": 25000,
+                "size": "S",
+                "sugar": 75,
+                "ice": 50,
+                "topping": "Trân châu"
+            }
+        ]
+    },
+    {
+        "id": "ODR003",
+        "items": [
+            {
+                "id": 1,
+                "name": "Trà sữa truyền thống",
+                "base_price": 25000,
+                "category": "Trà sữa",
+                "size": "L",
+                "sugar": "100",
+                "ice": "100",
+                "topping": "tran chau",
+                "final_price": 40000
+            }
+        ],
+        "total": 40000
+    }
+]

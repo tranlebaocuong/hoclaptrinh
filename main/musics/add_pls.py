@@ -15,8 +15,18 @@ def _stdio_utf8_win32():
 
 
 def doc_du_lieu(file_path):
-    with open(file_path, "r", encoding="utf-8") as f:
-        return json.load(f)
+    try:
+        with open(file_path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        print(f"Không tìm thấy file: {file_path}")
+        raise
+    except json.JSONDecodeError as e:
+        print(f"File JSON không hợp lệ ({file_path}): {e}")
+        raise
+    except OSError as e:
+        print(f"Không đọc được file: {e}")
+        raise
 
 
 def hien_thi_kho_nhac(all_songs):
@@ -27,8 +37,12 @@ def hien_thi_kho_nhac(all_songs):
 
 
 def luu_du_lieu(file_path, data):
-    with open(file_path, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=4)
+    try:
+        with open(file_path, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=4)
+    except OSError as e:
+        print(f"Không ghi được file ({file_path}): {e}")
+        raise
 
 
 def tao_playlist_moi():
@@ -37,10 +51,18 @@ def tao_playlist_moi():
     songs_path = root_dir / "data" / "music" / "songs.json"
     playlists_path = root_dir / "data" / "music" / "playlists.json"
 
-    all_songs = doc_du_lieu(songs_path)
-    all_playlists = doc_du_lieu(playlists_path)
+    try:
+        all_songs = doc_du_lieu(songs_path)
+        all_playlists = doc_du_lieu(playlists_path)
+    except (FileNotFoundError, json.JSONDecodeError, OSError):
+        return
 
-    name_playlist = input("nhập tên playlist mới: ").strip()
+    try:
+        name_playlist = input("nhập tên playlist mới: ").strip()
+    except (EOFError, UnicodeDecodeError):
+        print("\nKhông đọc được dữ liệu nhập.")
+        return
+
     if not name_playlist:
         print("Tên playlist không được để trống.")
         return
@@ -51,7 +73,12 @@ def tao_playlist_moi():
     da_chon = []
 
     while True:
-        choice = input("thêm bài (nhập STT hoặc q để xong): ").strip()
+        try:
+            choice = input("thêm bài (nhập STT hoặc q để xong): ").strip()
+        except (EOFError, UnicodeDecodeError):
+            print("\nKết thúc nhập.")
+            break
+
         if choice.lower() == "q":
             break
 
@@ -79,11 +106,17 @@ def tao_playlist_moi():
 
     next_id = max((pl.get("id", 0) for pl in all_playlists), default=0) + 1
     all_playlists.append({"id": next_id, "name": name_playlist, "song_ids": da_chon})
-    luu_du_lieu(playlists_path, all_playlists)
+    try:
+        luu_du_lieu(playlists_path, all_playlists)
+    except OSError:
+        return
 
     print()
     print(f"đã lưu playlist: {name_playlist}")
 
 
 if __name__ == "__main__":
-    tao_playlist_moi()
+    try:
+        tao_playlist_moi()
+    except KeyboardInterrupt:
+        print("\nĐã hủy.")

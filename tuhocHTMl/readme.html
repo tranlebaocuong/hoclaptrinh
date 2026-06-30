@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>hoclaptrinh - Python Learning Project</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>hoclaptrinh - Python Learning Project</h1>
+  <p>Dự án học tập Python với các ví dụ thực hành về cơ bản đến nâng cao, bao gồm cấu trúc dữ liệu, xử lý file, module, và ứng dụng thực tế.</p>
+
+  <h2>Cấu trúc dự án</h2>
+  <pre><code>hoclaptrinh/
+├── main/                    # Code Python chính
+│   ├── bill/               # Quản lý hóa đơn, tiền điện
+│   ├── convert/            # Chuyển đổi dữ liệu (tiền tệ, đơn vị)
+│   ├── dict/               # Làm việc với từ điển (dictionary)
+│   ├── dict_list/          # Kết hợp từ điển và danh sách
+│   ├── game/               # Các game/trò chơi Python
+│   ├── import_module/      # Tập import và dùng module
+│   ├── introduce/          # Giới thiệu bản thân, password
+│   ├── list/               # Làm việc với danh sách (list)
+│   ├── math/               # Bài toán toán học (hình học, v.v)
+│   ├── menu/               # Tập làm menu lựa chọn
+│   ├── musics/             # Quản lý danh sách phát nhạc (JSON)
+│   ├── return/             # Tập dùng return trong hàm
+│   └── test_code/          # Các file test và thử nghiệm
+├── data/                    # Dữ liệu mẫu
+│   ├── colors/             # Danh sách màu
+│   ├── docs/               # Tài liệu (động vật, v.v)
+│   ├── music/              # File JSON nhạc/playlist
+│   ├── numbers/            # Số chẵn/lẻ
+│   └── orders/             # Menu và đơn hàng
+├── .venv/                   # Virtual environment
+└── README.md
+</code></pre>
+
+  <h2>Bắt đầu</h2>
+  <h3>1. Clone repo</h3>
+  <pre><code>git clone https://github.com/tranlebaocuong/hoclaptrinh.git
+cd hoclaptrinh
+</code></pre>
+
+  <h3>2. Tạo và kích hoạt virtual environment</h3>
+  <pre><code># Windows
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+
+# macOS/Linux
+python3 -m venv .venv
+source .venv/bin/activate
+</code></pre>
+
+  <h3>3. Chạy các ví dụ</h3>
+  <pre><code>python main/musics/music.py
+python main/game/tuti.py
+python main/math/tam_giac.py
+</code></pre>
+
+  <h2>Các phần học chính</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Folder</th>
+        <th>Mục đích</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><code>bill/</code></td><td>Tính tiền điện, quản lý hóa đơn</td></tr>
+      <tr><td><code>convert/</code></td><td>Chuyển đổi tiền tệ, đơn vị</td></tr>
+      <tr><td><code>dict/</code></td><td>Các thao tác cơ bản với dictionary</td></tr>
+      <tr><td><code>list/</code></td><td>Làm việc với danh sách, playlist</td></tr>
+      <tr><td><code>game/</code></td><td>Trò chơi đơn giản (tuti, v.v)</td></tr>
+      <tr><td><code>math/</code></td><td>Bài toán hình học (tam giác, hình tròn)</td></tr>
+      <tr><td><code>import_module/</code></td><td>Tập import module và sử dụng</td></tr>
+      <tr><td><code>menu/</code></td><td>Xây dựng menu tương tác</td></tr>
+      <tr><td><code>musics/</code></td><td>Quản lý dữ liệu JSON</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Yêu cầu</h2>
+  <ul>
+    <li>Python 3.10+</li>
+    <li>Không cần thư viện bên ngoài (dùng thư viện chuẩn)</li>
+  </ul>
+
+  <h2>Cách sử dụng</h2>
+  <ol>
+    <li>Chọn một folder trong <code>main/</code></li>
+    <li>Mở file <code>.py</code> và đọc code</li>
+    <li>Chạy file: <code>python &lt;tên-file&gt;</code></li>
+    <li>Sửa code và thử nghiệm</li>
+  </ol>
+
+  <h2>Ghi chú</h2>
+  <ul>
+    <li>Tất cả code viết bằng Python thuần</li>
+    <li>Hỗ trợ tiếng Việt (UTF-8)</li>
+    <li>Mỗi file có comment giải thích</li>
+  </ul>
+
+  <h2>Git &amp; Pull Request</h2>
+  <p>Dự án dùng Git để quản lý phiên bản:</p>
+  <pre><code>git checkout -b feature/tên-tính-năng
+git add .
+git commit -m "Mô tả thay đổi"
+git push origin feature/tên-tính-năng
+</code></pre>
+  <p>Sau đó tạo Pull Request trên GitHub.</p>
+
+  <h2>Tác giả</h2>
+  <p><strong>Trần Lê Bảo Cường</strong></p>
+  <p>GitHub: <a href="https://github.com/tranlebaocuong">@tranlebaocuong</a></p>
+
+  <h2>License</h2>
+  <p>Dự án này mở cho mục đích học tập.</p>
+
+  <hr>
+  <p><strong>cường đang cố gắng tự làm readme!</strong></p>
+</body>
+</html>

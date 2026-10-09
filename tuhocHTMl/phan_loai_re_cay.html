@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌿 Phân Loại Rễ Cây - Bài Tập Thầy Dũng</title>
+
+  <!-- Google Fonts: Plus Jakarta Sans & Be Vietnam Pro -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Be+Vietnam+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Thư viện p5.js và ml5.js cho Teachable Machine -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.dom.min.js"></script>
+  <script src="https://unpkg.com/ml5@0.12.2/dist/ml5.min.js" type="text/javascript"></script>
+
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at 20% 20%, #1e3a29 0%, #0d1a12 100%);
+      --surface: rgba(22, 42, 30, 0.9);
+      --surface-border: rgba(116, 198, 157, 0.35);
+      --leaf-green: #52b788;
+      --leaf-bright: #74c69d;
+      --earth-brown: #a67c52;
+      --earth-accent: #d4a373;
+      --text-light: #e8f5e9;
+      --text-muted: #95d5b2;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', 'Be Vietnam Pro', sans-serif;
+      background: var(--bg-gradient);
+      color: var(--text-light);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+    }
+
+    .app-card {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 24px;
+      padding: 26px 24px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.55), 0 0 35px rgba(82, 183, 136, 0.2);
+      backdrop-filter: blur(16px);
+      text-align: center;
+      max-width: 440px;
+      width: 100%;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(82, 183, 136, 0.2);
+      border: 1px solid rgba(116, 198, 157, 0.4);
+      color: var(--leaf-bright);
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 5px 14px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    h1 {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .project-desc {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      background: rgba(14, 28, 20, 0.65);
+      border: 1px dashed rgba(166, 124, 82, 0.45);
+      border-radius: 12px;
+      padding: 10px 14px;
+      margin-bottom: 18px;
+      line-height: 1.5;
+    }
+
+    .project-desc strong {
+      color: var(--earth-accent);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .root-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+    }
+
+    .root-tag {
+      background: rgba(82, 183, 136, 0.15);
+      border: 1px solid rgba(82, 183, 136, 0.35);
+      color: var(--leaf-bright);
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    /* VÙNG CHỨA CANVAS: Căn chuẩn, ôm khít 100% canvas p5.js */
+    #canvas-holder {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 16px;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
+      border: 2px solid var(--earth-brown);
+      width: fit-content;
+      background: #111;
+      line-height: 0;
+    }
+
+    #canvas-holder canvas {
+      display: block;
+      border-radius: 12px;
+    }
+
+    /* Thanh điều khiển Camera & Tải ảnh */
+    .controls-row {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-family: inherit;
+      font-size: 0.86rem;
+      font-weight: 600;
+      padding: 10px 18px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .btn-camera {
+      background: var(--leaf-green);
+      color: #0b1710;
+      box-shadow: 0 4px 15px rgba(82, 183, 136, 0.35);
+    }
+    .btn-camera:hover {
+      background: var(--leaf-bright);
+      transform: translateY(-2px);
+    }
+
+    .btn-upload {
+      background: rgba(212, 163, 115, 0.18);
+      border: 1px solid rgba(212, 163, 115, 0.45);
+      color: var(--earth-accent);
+    }
+    .btn-upload:hover {
+      background: rgba(212, 163, 115, 0.28);
+      transform: translateY(-2px);
+    }
+
+    .helper-tip {
+      font-size: 0.78rem;
+      color: rgba(149, 213, 178, 0.85);
+      line-height: 1.45;
+    }
+
+    .helper-tip i {
+      color: var(--earth-accent);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="app-card">
+    <div class="badge-pill">
+      <i class="fa-solid fa-leaf"></i> Teachable Machine & p5.js
+    </div>
+    
+    <h1>Phân Loại Rễ Cây 🌱</h1>
+
+    <div class="project-desc">
+      <strong>BÀI TẬP CỦA THẦY DŨNG:</strong>
+      <div class="root-tags">
+        <span class="root-tag">RỄ CỌC</span>
+        <span class="root-tag">RỄ CHÙM</span>
+        <span class="root-tag">RỄ THỞ</span>
+        <span class="root-tag">RỄ MÓC</span>
+        <span class="root-tag">RỄ KÝ SINH</span>
+      </div>
+    </div>
+
+    <!-- Vùng chứa Canvas p5.js (Đảm bảo canvas nằm trọn vẹn bên trong) -->
+    <div id="canvas-holder"></div>
+
+    <!-- Thanh nút thao tác -->
+    <div class="controls-row">
+      <button class="btn-action btn-camera" onclick="switchToCamera()" title="Bật lại luồng camera trực tiếp">
+        <i class="fa-solid fa-camera"></i> Dùng Webcam
+      </button>
+
+      <label class="btn-action btn-upload" title="Chọn file ảnh rễ cây từ máy tính để phân loại">
+        <i class="fa-solid fa-image"></i> Tải ảnh rễ cây
+        <input type="file" id="filePicker" accept="image/*" style="display: none;" onchange="onFileChosen(this)">
+      </label>
+    </div>
+
+    <p class="helper-tip">
+      <i class="fa-solid fa-circle-info"></i> <em>Mẹo: Hãy đưa mẫu rễ cây vào giữa khung kính ngắm, hoặc bấm "Tải ảnh rễ cây" để phân loại ảnh từ máy!</em>
+    </p>
+  </div>
+
+  <script>
+    // ========================================================
+    // LOGIC NHẬN DIỆN VÀ VẼ GIAO DIỆN (TÍCH HỢP TRỰC TIẾP)
+    // ========================================================
+    let classifier;
+    let imageModelURL = 'https://teachablemachine.withgoogle.com/models/VIjgspcLq/';
+
+    let video;
+    let flippedVideo;
+    let currentImage = null;
+    let isVideoMode = true;
+
+    let label = "Đang tải mô hình...";
+    let confidence = 0;
+    let cameraReady = false;
+
+    // 1. Nạp Model
+    function preload() {
+      classifier = ml5.imageClassifier(imageModelURL + 'model.json');
+    }
+
+    // 2. Setup p5.js
+    function setup() {
+      // Kích thước chuẩn đẹp: 320x310
+      let canvas = createCanvas(320, 310);
+      
+      // GẮN CHẶT CANVAS VÀO TRONG THẺ #canvas-holder
+      let container = document.getElementById('canvas-holder');
+      if (container) {
+        container.appendChild(canvas.elt);
+      }
+
+      // Khởi động Camera
+      initCamera();
+
+      // Hỗ trợ kéo thả ảnh vào canvas
+      canvas.drop(handleFileDrop);
+    }
+
+    function initCamera() {
+      cameraReady = false;
+      label = "Đang mở camera...";
+
+      try {
+        video = createCapture(VIDEO, function(stream) {
+          console.log("✅ Camera đã sẵn sàng!");
+          cameraReady = true;
+          label = "Đang quét mẫu rễ...";
+          classifyFrame();
+        });
+
+        video.size(320, 240);
+        video.hide();
+      } catch (err) {
+        console.error("Lỗi camera:", err);
+      }
+    }
+
+    // 3. Draw Loop
+    function draw() {
+      background(26, 37, 30); // Nền đất tối
+
+      // A. Hiển thị hình ảnh (Camera hoặc Ảnh tải lên)
+      if (isVideoMode) {
+        if (cameraReady && video && video.width > 0) {
+          flippedVideo = ml5.flipImage(video);
+          image(flippedVideo, 0, 0, 320, 240);
+        } else {
+          // Màn hình chờ
+          fill(20, 30, 24);
+          rect(0, 0, 320, 240);
+          fill(149, 213, 178);
+          textSize(12);
+          textAlign(CENTER, CENTER);
+          text("📷 Đang chờ cấp quyền camera...\n(Nhấn 'Cho phép / Allow' trên trình duyệt\nhoặc dùng nút 'Tải ảnh rễ cây' bên dưới)", 20, 80, 280, 80);
+        }
+      } else if (currentImage) {
+        image(currentImage, 0, 0, 320, 240);
+      }
+
+      // B. Khung kính ngắm sinh học (Viewfinder)
+      noFill();
+      stroke(82, 183, 136, 150);
+      strokeWeight(2);
+      rect(10, 10, 300, 220, 8);
+
+      // 4 góc ngắm
+      stroke(116, 198, 157);
+      strokeWeight(3);
+      let c = 12;
+      line(10, 10, 10 + c, 10); line(10, 10, 10, 10 + c);
+      line(310, 10, 310 - c, 10); line(310, 10, 310, 10 + c);
+      line(10, 230, 10 + c, 230); line(10, 230, 10, 230 - c);
+      line(310, 230, 310 - c, 230); line(310, 230, 310, 230 - c);
+
+      // C. Bảng hiển thị kết quả (Bottom Dashboard)
+      noStroke();
+      fill(18, 40, 29); // Xanh rêu đậm thực vật
+      rect(0, 240, 320, 70);
+
+      stroke(140, 98, 57); // Nâu đất phù sa
+      strokeWeight(2);
+      line(0, 240, 320, 240);
+
+      // Xử lý thông minh: Nếu độ tin cậy < 65% (quay vào mặt/phòng), nhắc đưa rễ cây vào!
+      let displayLabel = label;
+      let isConfident = confidence >= 65;
+
+      noStroke();
+      if (!isConfident && isVideoMode && cameraReady) {
+        fill(254, 215, 170); // Vàng nhạt nhắc nhở
+        textSize(13);
+        textFont('sans-serif');
+        textStyle(BOLD);
+        textAlign(CENTER, CENTER);
+        text("🔍 Hãy giơ mẫu rễ cây vào khung", width / 2, 262);
+
+        fill(149, 213, 178);
+        textSize(11);
+        textStyle(NORMAL);
+        text("Độ tương đồng cao nhất: " + label + " (" + confidence + "%)", width / 2, 281);
+      } else {
+        fill(216, 243, 220); // Xanh mầm non sáng
+        textSize(15);
+        textFont('sans-serif');
+        textStyle(BOLD);
+        textAlign(CENTER, CENTER);
+        text("🌱 " + displayLabel, width / 2, 262);
+
+        fill(149, 213, 178);
+        textSize(11);
+        textStyle(NORMAL);
+        text("Độ tin cậy: " + confidence + "%", width / 2, 281);
+      }
+
+      // Thanh đo độ tin cậy
+      let barWidth = 190;
+      let barHeight = 5;
+      let barX = (width - barWidth) / 2;
+      let barY = 293;
+
+      fill(45, 60, 50);
+      rect(barX, barY, barWidth, barHeight, 3);
+
+      let fillWidth = map(confidence, 0, 100, 0, barWidth, true);
+      fill(isConfident ? color(82, 183, 136) : color(212, 163, 115));
+      rect(barX, barY, fillWidth, barHeight, 3);
+    }
+
+    // 4. Nhận diện hình ảnh
+    function classifyFrame() {
+      if (isVideoMode) {
+        if (cameraReady && video && video.loadedmetadata) {
+          flippedVideo = ml5.flipImage(video);
+          classifier.classify(flippedVideo, gotResult);
+        } else {
+          setTimeout(classifyFrame, 150);
+        }
+      } else if (currentImage) {
+        classifier.classify(currentImage, gotResult);
+      }
+    }
+
+    // 5. Kết quả từ Model
+    function gotResult(error, results) {
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      if (results && results.length > 0) {
+        label = results[0].label;
+        confidence = floor(results[0].confidence * 100);
+      }
+
+      if (isVideoMode) {
+        classifyFrame();
+      }
+    }
+
+    // Tải ảnh từ máy tính
+    function onFileChosen(input) {
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          isVideoMode = false;
+          currentImage = createImg(e.target.result, '', '', function() {
+            currentImage.hide();
+            label = "Đang nhận diện ảnh...";
+            classifyFrame();
+          });
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function handleFileDrop(file) {
+      if (file.type === 'image') {
+        isVideoMode = false;
+        currentImage = createImg(file.data, '', '', function() {
+          currentImage.hide();
+          label = "Đang nhận diện ảnh...";
+          classifyFrame();
+        });
+      }
+    }
+
+    function switchToCamera() {
+      isVideoMode = true;
+      currentImage = null;
+      label = "Đang quét mẫu rễ...";
+      if (cameraReady) {
+        classifyFrame();
+      } else {
+        initCamera();
+      }
+    }
+  </script>
+</body>
+
+</html>

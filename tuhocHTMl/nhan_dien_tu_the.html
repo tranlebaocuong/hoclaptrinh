@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🧘 Nhận Diện Tư Thế Cơ Thể - Bài Tập Thầy Dũng</title>
+
+  <!-- Google Fonts: Plus Jakarta Sans & Be Vietnam Pro -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome 6 CDN Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Thư viện TensorFlow.js và Teachable Machine Pose -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/pose@0.8/dist/teachablemachine-pose.min.js"></script>
+
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at 20% 15%, #181a3a 0%, #0b0f24 55%, #040714 100%);
+      --card-bg: rgba(15, 23, 42, 0.88);
+      --card-border: rgba(99, 102, 241, 0.35);
+      --pose-indigo: #6366f1;
+      --pose-cyan: #06b6d4;
+      --pose-amber: #f59e0b;
+      --pose-pink: #ec4899;
+      --pose-green: #10b981;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --glow-indigo: 0 0 35px rgba(99, 102, 241, 0.28);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', 'Be Vietnam Pro', sans-serif;
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 16px;
+    }
+
+    .app-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 26px;
+      padding: 30px 24px;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.65), var(--glow-indigo);
+      backdrop-filter: blur(20px);
+      text-align: center;
+      max-width: 500px;
+      width: 100%;
+      position: relative;
+    }
+
+    /* Huy hiệu trên cùng */
+    .badge-header {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.45);
+      color: #a5b4fc;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 6px 16px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* Tiêu đề ứng dụng */
+    h1 {
+      font-size: 1.55rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #ffffff 40%, #c7d2fe 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Hộp thông tin bài tập */
+    .project-info {
+      background: rgba(10, 15, 30, 0.7);
+      border: 1px dashed rgba(99, 102, 241, 0.4);
+      border-radius: 16px;
+      padding: 13px 16px;
+      margin-bottom: 18px;
+      text-align: left;
+    }
+
+    .project-info p.lead-text {
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: #38bdf8;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pose-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .pose-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 11px;
+      border-radius: 8px;
+      transition: transform 0.2s ease;
+    }
+
+    .pose-tag:hover {
+      transform: translateY(-1px);
+    }
+
+    .tag-ngoi      { background: rgba(99, 102, 241, 0.2);  border: 1px solid rgba(99, 102, 241, 0.5);  color: #a5b4fc; }
+    .tag-duatay    { background: rgba(6, 182, 212, 0.2);   border: 1px solid rgba(6, 182, 212, 0.5);   color: #67e8f9; }
+    .tag-chongcam  { background: rgba(245, 158, 11, 0.2);  border: 1px solid rgba(245, 158, 11, 0.5);  color: #fcd34d; }
+    .tag-vuottoc   { background: rgba(236, 72, 153, 0.2);  border: 1px solid rgba(236, 72, 153, 0.5);  color: #f472b6; }
+
+    /* VÙNG CHỨA CANVAS: Hiệu ứng kính ngắm công nghệ cao */
+    #canvas-holder {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 16px;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 25px rgba(99, 102, 241, 0.2);
+      border: 2px solid rgba(99, 102, 241, 0.45);
+      width: 360px;
+      height: 270px;
+      background: #060914;
+    }
+
+    #canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 16px;
+      object-fit: cover;
+    }
+
+    /* Màn hình chờ khi chưa mở camera */
+    #camera-placeholder {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at center, #111836 0%, #060914 85%);
+      color: #94a3b8;
+      padding: 20px;
+      text-align: center;
+      z-index: 5;
+    }
+
+    #camera-placeholder i.camera-icon {
+      font-size: 2.8rem;
+      color: #818cf8;
+      margin-bottom: 12px;
+      animation: pulseGlow 2s infinite ease-in-out;
+    }
+
+    #camera-placeholder p {
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { transform: scale(1); opacity: 0.85; }
+      50% { transform: scale(1.08); opacity: 1; filter: drop-shadow(0 0 12px #6366f1); }
+    }
+
+    /* Thẻ trạng thái trên Canvas */
+    .hud-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(6, 182, 212, 0.4);
+      color: #67e8f9;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      z-index: 6;
+      display: none;
+    }
+
+    .hud-badge.active {
+      display: flex;
+    }
+
+    .hud-dot {
+      width: 6px;
+      height: 6px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #10b981;
+      animation: blink 1.2s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* BẢNG KẾT QUẢ HIỆN TẠI NỔI BẬT */
+    .top-result-card {
+      background: rgba(10, 16, 32, 0.85);
+      border: 1px solid rgba(99, 102, 241, 0.4);
+      border-radius: 14px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.3s ease;
+    }
+
+    .top-result-card.highlight {
+      border-color: #38bdf8;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+    }
+
+    .result-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-align: left;
+    }
+
+    .result-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: rgba(99, 102, 241, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      color: #a5b4fc;
+      transition: all 0.3s ease;
+    }
+
+    .result-title {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .result-name {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .result-percent {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #38bdf8;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* DANH SÁCH THANH ĐO XÁC SUẤT 4 TƯ THẾ */
+    .prediction-list {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      margin-bottom: 18px;
+    }
+
+    .predict-item {
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 9px 12px;
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .predict-item.active {
+      border-color: rgba(99, 102, 241, 0.65);
+      background: rgba(26, 35, 68, 0.7);
+      box-shadow: 0 0 15px rgba(99, 102, 241, 0.25);
+    }
+
+    .predict-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.84rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .predict-label {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .predict-prob {
+      font-variant-numeric: tabular-nums;
+      font-size: 0.82rem;
+    }
+
+    .progress-bar-bg {
+      background: rgba(255, 255, 255, 0.1);
+      height: 6px;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 4px;
+      transition: width 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Màu sắc riêng cho từng thanh */
+    .fill-ngoi     { background: linear-gradient(90deg, #6366f1, #818cf8); }
+    .fill-duatay   { background: linear-gradient(90deg, #06b6d4, #22d3ee); }
+    .fill-chongcam { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+    .fill-vuottoc  { background: linear-gradient(90deg, #ec4899, #f472b6); }
+
+    /* HÀNG NÚT ĐIỀU KHIỂN */
+    .controls-row {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: inherit;
+      font-size: 0.86rem;
+      font-weight: 700;
+      padding: 10px 18px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      user-select: none;
+    }
+
+    .btn-start {
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      color: #ffffff;
+      box-shadow: 0 4px 18px rgba(99, 102, 241, 0.35);
+    }
+    .btn-start:hover {
+      background: linear-gradient(135deg, #818cf8, #6366f1);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 22px rgba(99, 102, 241, 0.5);
+    }
+
+    .btn-stop {
+      background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+      box-shadow: 0 4px 18px rgba(239, 68, 68, 0.35) !important;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #e2e8f0;
+    }
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.14);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary.active {
+      background: rgba(6, 182, 212, 0.2);
+      border-color: rgba(6, 182, 212, 0.5);
+      color: #67e8f9;
+    }
+
+    /* Mẹo ghi nhớ */
+    .tip-box {
+      font-size: 0.78rem;
+      color: rgba(148, 163, 184, 0.85);
+      line-height: 1.5;
+      background: rgba(10, 16, 32, 0.5);
+      padding: 9px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .tip-box i {
+      color: #38bdf8;
+      margin-right: 4px;
+    }
+
+    @media (max-width: 480px) {
+      .app-card {
+        padding: 22px 16px;
+      }
+      #canvas-holder {
+        width: 100%;
+        height: 250px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="app-card">
+    <!-- Huy hiệu phía trên -->
+    <div class="badge-header">
+      <i class="fa-solid fa-person-walking"></i> AI Motion Tracking & PoseNet
+    </div>
+
+    <!-- Tiêu đề chính -->
+    <h1>NHẬN DIỆN TƯ THẾ CƠ THỂ 🧘‍♂️</h1>
+
+    <!-- Thông tin bài tập -->
+    <div class="project-info">
+      <p class="lead-text">
+        <i class="fa-solid fa-graduation-cap"></i> BÀI TẬP CỦA THẦY DŨNG:
+      </p>
+      <div class="pose-tags">
+        <span class="pose-tag tag-ngoi"><i class="fa-solid fa-chair"></i> NGỒI</span>
+        <span class="pose-tag tag-duatay"><i class="fa-solid fa-hand"></i> ĐƯA TAY</span>
+        <span class="pose-tag tag-chongcam"><i class="fa-solid fa-head-side-virus"></i> CHỐNG CẰM</span>
+        <span class="pose-tag tag-vuottoc"><i class="fa-solid fa-wand-magic-sparkles"></i> VUỐT TÓC</span>
+      </div>
+    </div>
+
+    <!-- Khung hiển thị Canvas & Webcam -->
+    <div id="canvas-holder">
+      <div class="hud-badge" id="hudBadge">
+        <span class="hud-dot"></span> AI TRACKING ACTIVE
+      </div>
+
+      <div id="camera-placeholder">
+        <i class="fa-solid fa-video camera-icon"></i>
+        <p><strong>Camera đang tắt</strong><br>Nhấn nút <b>"Bật Camera"</b> bên dưới để bắt đầu nhận diện tư thế!</p>
+      </div>
+
+      <canvas id="canvas" width="360" height="270"></canvas>
+    </div>
+
+    <!-- Hộp hiển thị tư thế chủ đạo hiện tại -->
+    <div class="top-result-card" id="topResultCard">
+      <div class="result-left">
+        <div class="result-icon" id="topIcon">
+          <i class="fa-solid fa-user"></i>
+        </div>
+        <div>
+          <div class="result-title">Tư thế nhận diện:</div>
+          <div class="result-name" id="topName">Sẵn sàng nhận diện</div>
+        </div>
+      </div>
+      <div class="result-percent" id="topPercent">0%</div>
+    </div>
+
+    <!-- Bảng thanh đo xác suất 4 tư thế -->
+    <div class="prediction-list" id="predictionList">
+      <!-- 1. NGỒI -->
+      <div class="predict-item" id="item-0">
+        <div class="predict-info">
+          <span class="predict-label"><i class="fa-solid fa-chair" style="color: #818cf8;"></i> NGỒI</span>
+          <span class="predict-prob" id="prob-0">0%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill fill-ngoi" id="bar-0"></div>
+        </div>
+      </div>
+
+      <!-- 2. ĐƯA TAY -->
+      <div class="predict-item" id="item-1">
+        <div class="predict-info">
+          <span class="predict-label"><i class="fa-solid fa-hand" style="color: #22d3ee;"></i> ĐƯA TAY</span>
+          <span class="predict-prob" id="prob-1">0%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill fill-duatay" id="bar-1"></div>
+        </div>
+      </div>
+
+      <!-- 3. CHỐNG CẰM -->
+      <div class="predict-item" id="item-2">
+        <div class="predict-info">
+          <span class="predict-label"><i class="fa-solid fa-head-side-virus" style="color: #fbbf24;"></i> CHỐNG CẰM</span>
+          <span class="predict-prob" id="prob-2">0%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill fill-chongcam" id="bar-2"></div>
+        </div>
+      </div>
+
+      <!-- 4. VUỐT TÓC -->
+      <div class="predict-item" id="item-3">
+        <div class="predict-info">
+          <span class="predict-label"><i class="fa-solid fa-wand-magic-sparkles" style="color: #f472b6;"></i> VUỐT TÓC</span>
+          <span class="predict-prob" id="prob-3">0%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill fill-vuottoc" id="bar-3"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hàng nút điều khiển -->
+    <div class="controls-row">
+      <button class="btn-action btn-start" id="btnToggleCam" onclick="toggleCamera()">
+        <i class="fa-solid fa-play"></i> <span id="btnCamText">Bật Camera</span>
+      </button>
+
+      <button class="btn-action btn-secondary active" id="btnToggleVoice" onclick="toggleVoice()">
+        <i class="fa-solid fa-volume-high"></i> <span id="btnVoiceText">Giọng Nói: BẬT</span>
+      </button>
+
+      <button class="btn-action btn-secondary" onclick="simulatePoseTest()" title="Thử nghiệm kết quả giao diện">
+        <i class="fa-solid fa-flask"></i> Giả Lập Test
+      </button>
+    </div>
+
+    <!-- Lời khuyên cho người dùng -->
+    <p class="tip-box">
+      <i class="fa-solid fa-circle-info"></i> <em>Mẹo: Ngồi cách camera khoảng 1m để thấy rõ nửa thân trên và hai tay. Khi bạn giữ một tư thế ổn định, trợ lý AI sẽ tự động đọc tên tư thế!</em>
+    </p>
+  </div>
+
+  <script>
+    // ========================================================
+    // CẤU HÌNH VÀ BIẾN TOÀN CỤC
+    // ========================================================
+    const MODEL_URL = "https://teachablemachine.withgoogle.com/models/5ZNHkFhWB/";
+    
+    let model = null;
+    let webcam = null;
+    let ctx = null;
+    let canvas = null;
+    let isRunning = false;
+    let animationFrameId = null;
+    let isModelLoaded = false;
+    let voiceEnabled = true;
+
+    // Biến cho phát âm thanh (Speech Synthesis)
+    let lastSpokenPose = "";
+    let lastSpokenTime = 0;
+    let stablePose = "";
+    let stablePoseCount = 0;
+
+    // Cấu hình nhãn và icon tương ứng
+    const POSE_CONFIG = [
+      { name: "NGỒI", icon: "fa-chair", color: "#818cf8" },
+      { name: "ĐƯA TAY", icon: "fa-hand", color: "#22d3ee" },
+      { name: "CHỐNG CẰM", icon: "fa-head-side-virus", color: "#fbbf24" },
+      { name: "VUỐT TÓC", icon: "fa-wand-magic-sparkles", color: "#f472b6" }
+    ];
+
+    // Khởi tạo Canvas khi trang load
+    window.addEventListener("DOMContentLoaded", () => {
+      canvas = document.getElementById("canvas");
+      ctx = canvas.getContext("2d");
+    });
+
+    // ========================================================
+    // 1. TẢI MÔ HÌNH VÀ BẬT / TẮT CAMERA
+    // ========================================================
+    async function toggleCamera() {
+      const btn = document.getElementById("btnToggleCam");
+      const btnText = document.getElementById("btnCamText");
+      const placeholder = document.getElementById("camera-placeholder");
+      const hudBadge = document.getElementById("hudBadge");
+
+      if (isRunning) {
+        // DỪNG CAMERA
+        stopDetection();
+        btn.classList.remove("btn-stop");
+        btn.classList.add("btn-start");
+        btnText.innerText = "Bật Camera";
+        btn.querySelector("i").className = "fa-solid fa-play";
+        placeholder.style.display = "flex";
+        hudBadge.classList.remove("active");
+        resetPredictionUI();
+        return;
+      }
+
+      // BẬT CAMERA
+      try {
+        btnText.innerText = "Đang tải...";
+        btn.disabled = true;
+
+        // Tải mô hình nếu chưa tải
+        if (!model) {
+          document.getElementById("topName").innerText = "Đang nạp mô hình AI...";
+          const modelURL = MODEL_URL + "model.json";
+          const metadataURL = MODEL_URL + "metadata.json";
+          model = await tmPose.load(modelURL, metadataURL);
+          isModelLoaded = true;
+        }
+
+        // Thiết lập Webcam: 360 x 270, lật gương flip = true
+        const sizeW = 360;
+        const sizeH = 270;
+        const flip = true;
+        webcam = new tmPose.Webcam(sizeW, sizeH, flip);
+        await webcam.setup();
+        await webcam.play();
+
+        canvas.width = sizeW;
+        canvas.height = sizeH;
+
+        isRunning = true;
+        placeholder.style.display = "none";
+        hudBadge.classList.add("active");
+
+        btn.disabled = false;
+        btn.classList.remove("btn-start");
+        btn.classList.add("btn-stop");
+        btnText.innerText = "Tạm Dừng";
+        btn.querySelector("i").className = "fa-solid fa-pause";
+
+        document.getElementById("topName").innerText = "Đang quan sát...";
+
+        // Bắt đầu vòng lặp nhận diện
+        loop();
+
+      } catch (err) {
+        console.error("Lỗi khởi động camera:", err);
+        alert("Không thể mở Camera! Vui lòng kiểm tra và cấp quyền Camera trên trình duyệt.");
+        btn.disabled = false;
+        btnText.innerText = "Bật Camera";
+      }
+    }
+
+    function stopDetection() {
+      isRunning = false;
+      if (animationFrameId) {
+        window.cancelAnimationFrame(animationFrameId);
+      }
+      if (webcam) {
+        webcam.stop();
+      }
+    }
+
+    // ========================================================
+    // 2. VÒNG LẶP XỬ LÝ (LOOP & PREDICT)
+    // ========================================================
+    async function loop() {
+      if (!isRunning) return;
+
+      webcam.update();
+      await predict();
+      animationFrameId = window.requestAnimationFrame(loop);
+    }
+
+    async function predict() {
+      if (!model || !webcam.canvas) return;
+
+      // Ước lượng tư thế từ webcam canvas
+      const { pose, posenetOutput } = await model.estimatePose(webcam.canvas);
+      // Dự đoán xác suất 4 lớp
+      const prediction = await model.predict(posenetOutput);
+
+      let highestProb = 0;
+      let highestIndex = -1;
+
+      // Cập nhật giao diện 4 thanh xác suất
+      for (let i = 0; i < prediction.length; i++) {
+        const prob = prediction[i].probability;
+        const percent = Math.round(prob * 100);
+
+        const probEl = document.getElementById(`prob-${i}`);
+        const barEl = document.getElementById(`bar-${i}`);
+        const itemEl = document.getElementById(`item-${i}`);
+
+        if (probEl) probEl.innerText = `${percent}%`;
+        if (barEl) barEl.style.width = `${percent}%`;
+
+        if (prob > highestProb) {
+          highestProb = prob;
+          highestIndex = i;
+        }
+
+        if (itemEl) itemEl.classList.remove("active");
+      }
+
+      // Xử lý tư thế có xác suất cao nhất
+      if (highestIndex !== -1 && highestProb >= 0.5) {
+        const bestClass = prediction[highestIndex].className;
+        const bestPercent = Math.round(highestProb * 100);
+
+        // Highlight mục chiến thắng
+        const activeItem = document.getElementById(`item-${highestIndex}`);
+        if (activeItem) activeItem.classList.add("active");
+
+        // Cập nhật card tổng quan phía trên
+        const topCard = document.getElementById("topResultCard");
+        const topName = document.getElementById("topName");
+        const topPercent = document.getElementById("topPercent");
+        const topIcon = document.getElementById("topIcon");
+
+        topName.innerText = bestClass;
+        topPercent.innerText = `${bestPercent}%`;
+        topCard.classList.add("highlight");
+
+        const cfg = POSE_CONFIG[highestIndex] || { icon: "fa-person", color: "#a5b4fc" };
+        topIcon.innerHTML = `<i class="fa-solid ${cfg.icon}"></i>`;
+        topIcon.style.color = cfg.color;
+        topPercent.style.color = cfg.color;
+
+        // Kiểm tra độ ổn định để phát giọng nói
+        handleSpeechTrigger(bestClass, highestProb);
+
+      } else {
+        document.getElementById("topName").innerText = "Chưa rõ tư thế";
+        document.getElementById("topPercent").innerText = `${Math.round(highestProb * 100)}%`;
+        document.getElementById("topResultCard").classList.remove("highlight");
+        stablePose = "";
+        stablePoseCount = 0;
+      }
+
+      // Vẽ hình ảnh và khung xương lên Canvas
+      drawPose(pose);
+    }
+
+    // ========================================================
+    // 3. VẼ HÌNH ẢNH VÀ KHUNG XƯƠNG NEON LÊN CANVAS
+    // ========================================================
+    function drawPose(pose) {
+      if (!webcam.canvas) return;
+
+      // 1. Vẽ hình ảnh webcam lên canvas
+      ctx.drawImage(webcam.canvas, 0, 0, canvas.width, canvas.height);
+
+      // 2. Vẽ các góc ngắm phong cách công nghệ cao (HUD Corners)
+      drawHUDCorners();
+
+      // 3. Vẽ khớp nối và khung xương phát sáng (Glowing Skeleton)
+      if (pose && pose.keypoints) {
+        const minPartConfidence = 0.45;
+
+        // Tùy chỉnh hiệu ứng phát sáng mượt mà
+        ctx.save();
+        ctx.shadowColor = "#00f0ff";
+        ctx.shadowBlur = 10;
+        
+        // Gọi thư viện Teachable Machine để vẽ các điểm và đoạn nối
+        tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx);
+        tmPose.drawKeypoints(pose.keypoints, minPartConfidence, ctx);
+
+        ctx.restore();
+      }
+    }
+
+    function drawHUDCorners() {
+      const w = canvas.width;
+      const h = canvas.height;
+      const c = 16; // Chiều dài góc
+      const p = 12; // Khoảng cách lề
+
+      ctx.save();
+      ctx.strokeStyle = "rgba(6, 182, 212, 0.75)";
+      ctx.lineWidth = 2.5;
+
+      // Góc trên trái
+      ctx.beginPath(); ctx.moveTo(p, p + c); ctx.lineTo(p, p); ctx.lineTo(p + c, p); ctx.stroke();
+      // Góc trên phải
+      ctx.beginPath(); ctx.moveTo(w - p - c, p); ctx.lineTo(w - p, p); ctx.lineTo(w - p, p + c); ctx.stroke();
+      // Góc dưới trái
+      ctx.beginPath(); ctx.moveTo(p, h - p - c); ctx.lineTo(p, h - p); ctx.lineTo(p + c, h - p); ctx.stroke();
+      // Góc dưới phải
+      ctx.beginPath(); ctx.moveTo(w - p - c, h - p); ctx.lineTo(w - p, h - p); ctx.lineTo(w - p, h - p - c); ctx.stroke();
+
+      ctx.restore();
+    }
+
+    // ========================================================
+    // 4. TÍNH NĂNG GIỌNG NÓI TIẾNG VIỆT THÔNG MINH (TTS)
+    // ========================================================
+    function handleSpeechTrigger(className, prob) {
+      if (!voiceEnabled || !('speechSynthesis' in window)) return;
+
+      if (className === stablePose) {
+        stablePoseCount++;
+      } else {
+        stablePose = className;
+        stablePoseCount = 1;
+      }
+
+      // Giữ tư thế ổn định liên tục ít nhất 15 khung hình (~0.5 - 0.7s) và độ tin cậy > 75%
+      if (stablePoseCount >= 15 && prob >= 0.75) {
+        const now = Date.now();
+        // Không đọc lại tư thế cũ trong vòng 3.5 giây
+        if (className !== lastSpokenPose || (now - lastSpokenTime > 3500)) {
+          speakPose(className);
+          lastSpokenPose = className;
+          lastSpokenTime = now;
+        }
+      }
+    }
+
+    function speakPose(poseName) {
+      if (!voiceEnabled || !('speechSynthesis' in window)) return;
+
+      const sentenceMap = {
+        "NGỒI": "Bạn đang ngồi",
+        "ĐƯA TAY": "Bạn đang đưa tay",
+        "CHỐNG CẰM": "Bạn đang chống cằm",
+        "VUỐT TÓC": "Bạn đang vuốt tóc"
+      };
+
+      const text = sentenceMap[poseName] || ("Tư thế " + poseName);
+      
+      // Hủy bỏ âm thanh cũ đang phát để phát câu mới
+      window.speechSynthesis.cancel();
+      
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = 'vi-VN';
+      utter.rate = 1.05;
+      utter.pitch = 1.0;
+      window.speechSynthesis.speak(utter);
+    }
+
+    function toggleVoice() {
+      voiceEnabled = !voiceEnabled;
+      const btn = document.getElementById("btnToggleVoice");
+      const btnText = document.getElementById("btnVoiceText");
+
+      if (voiceEnabled) {
+        btn.classList.add("active");
+        btn.querySelector("i").className = "fa-solid fa-volume-high";
+        btnText.innerText = "Giọng Nói: BẬT";
+      } else {
+        btn.classList.remove("active");
+        btn.querySelector("i").className = "fa-solid fa-volume-xmark";
+        btnText.innerText = "Giọng Nói: TẮT";
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      }
+    }
+
+    // ========================================================
+    // 5. GIẢ LẬP TEST GIAO DIỆN (NẾU KHÔNG CÓ CAMERA)
+    // ========================================================
+    let simIndex = 0;
+    function simulatePoseTest() {
+      const fakePoses = ["NGỒI", "ĐƯA TAY", "CHỐNG CẰM", "VUỐT TÓC"];
+      const target = simIndex % 4;
+      simIndex++;
+
+      for (let i = 0; i < 4; i++) {
+        const percent = (i === target) ? Math.floor(88 + Math.random() * 10) : Math.floor(Math.random() * 8);
+        document.getElementById(`prob-${i}`).innerText = `${percent}%`;
+        document.getElementById(`bar-${i}`).style.width = `${percent}%`;
+        const item = document.getElementById(`item-${i}`);
+        if (i === target) item.classList.add("active");
+        else item.classList.remove("active");
+      }
+
+      const activePose = fakePoses[target];
+      const cfg = POSE_CONFIG[target];
+      document.getElementById("topName").innerText = activePose;
+      document.getElementById("topPercent").innerText = "96%";
+      document.getElementById("topIcon").innerHTML = `<i class="fa-solid ${cfg.icon}"></i>`;
+      document.getElementById("topIcon").style.color = cfg.color;
+      document.getElementById("topPercent").style.color = cfg.color;
+      document.getElementById("topResultCard").classList.add("highlight");
+
+      if (voiceEnabled) speakPose(activePose);
+    }
+
+    function resetPredictionUI() {
+      for (let i = 0; i < 4; i++) {
+        document.getElementById(`prob-${i}`).innerText = "0%";
+        document.getElementById(`bar-${i}`).style.width = "0%";
+        document.getElementById(`item-${i}`).classList.remove("active");
+      }
+      document.getElementById("topName").innerText = "Sẵn sàng nhận diện";
+      document.getElementById("topPercent").innerText = "0%";
+      document.getElementById("topResultCard").classList.remove("highlight");
+      document.getElementById("topIcon").innerHTML = `<i class="fa-solid fa-user"></i>`;
+      document.getElementById("topIcon").style.color = "#a5b4fc";
+      document.getElementById("topPercent").style.color = "#38bdf8";
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  </script>
+</body>
+
+</html>

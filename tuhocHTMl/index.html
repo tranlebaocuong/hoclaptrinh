@@ -1,13 +1,1819 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cường đang tự học HTML</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TRẦN LÊ BẢO CƯỜNG | Portfolio Cá Nhân</title>
+  <meta name="description" content="Portfolio cá nhân của Trần Lê Bảo Cường - Sinh viên Khoa CNTT, Lớp Tin học Ứng dụng. Giới thiệu kỹ năng, dự án thực tế và dịch vụ công nghệ.">
+
+  <!-- Google Fonts: Inter & Plus Jakarta Sans / Be Vietnam Pro (Hỗ trợ 100% Tiếng Việt chuẩn xác) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome 6 Free CDN (Icons) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    /* =========================================================
+       1. CẤU HÌNH BIẾN MÀU SẮC & GIAO DIỆN (THEME VARIABLES)
+       ========================================================= */
+    :root {
+      /* Font chữ chuẩn Tiếng Việt (không bị lỗi nhảy dấu) */
+      --font-heading: 'Plus Jakarta Sans', 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-body: 'Inter', 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+      /* Màu chủ đạo: Xanh Navy + Cam Highlight */
+      --primary: #1e3a8a;          /* Xanh Navy đậm */
+      --primary-light: #2563eb;    /* Xanh dương tươi */
+      --primary-soft: rgba(37, 99, 235, 0.08);
+      --highlight: #f97316;        /* Cam Highlight tươi */
+      --highlight-hover: #ea580c;  /* Cam đậm khi hover */
+      --highlight-soft: rgba(249, 115, 22, 0.12);
+
+      /* Giao diện Sáng (Light Mode - Mặc định) */
+      --bg-page: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-alt: #f1f5f9;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: rgba(15, 23, 42, 0.08);
+      --header-bg: rgba(255, 255, 255, 0.85);
+
+      /* Bóng đổ (Shadows) */
+      --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
+      --shadow-md: 0 10px 25px -5px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 20px 35px -8px rgba(15, 23, 42, 0.12);
+
+      /* Bo góc & Chuyển động */
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+      --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Giao diện Tối (Dark Mode) */
+    [data-theme="dark"] {
+      --bg-page: #0b0f19;
+      --bg-surface: #131b2e;
+      --bg-alt: #1a243c;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --header-bg: rgba(11, 15, 25, 0.88);
+
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 12px 28px rgba(0, 0, 0, 0.45);
+      --shadow-lg: 0 22px 42px rgba(0, 0, 0, 0.6);
+
+      --primary-soft: rgba(59, 130, 246, 0.15);
+      --highlight-soft: rgba(249, 115, 22, 0.18);
+    }
+
+    /* =========================================================
+       2. CÀI ĐẶT CƠ BẢN (RESET & BASE STYLES)
+       ========================================================= */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      line-height: 1.7;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-heading);
+      color: var(--text-main);
+      line-height: 1.3;
+      font-weight: 700;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+      transition: var(--transition);
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    section {
+      padding: 5rem 0;
+      position: relative;
+    }
+
+    /* Tiêu đề chung cho các Section */
+    .section-header {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 3.5rem;
+    }
+
+    .section-header .section-badge {
+      display: inline-block;
+      padding: 0.35rem 1rem;
+      background: var(--highlight-soft);
+      color: var(--highlight);
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-radius: var(--radius-full);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-header h2 {
+      font-size: clamp(2rem, 3.5vw, 2.6rem);
+      margin-bottom: 0.8rem;
+    }
+
+    .section-header p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+
+    /* Các kiểu nút bấm (Buttons) */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 0.85rem 1.8rem;
+      border-radius: var(--radius-full);
+      font-family: var(--font-heading);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: var(--transition);
+    }
+
+    .btn-primary {
+      background: var(--highlight);
+      color: #ffffff;
+      box-shadow: 0 8px 20px rgba(249, 115, 22, 0.28);
+    }
+
+    .btn-primary:hover {
+      background: var(--highlight-hover);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 25px rgba(249, 115, 22, 0.4);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text-main);
+      border-color: var(--primary);
+    }
+
+    .btn-outline:hover {
+      background: var(--primary);
+      color: #ffffff;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 22px rgba(30, 58, 138, 0.25);
+    }
+
+    /* =========================================================
+       3. STICKY HEADER & THANH ĐIỀU HƯỚNG (NAVBAR)
+       ========================================================= */
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: transparent;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease;
+      padding: 1.25rem 0;
+    }
+
+    .site-header.scrolled {
+      background: var(--header-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: var(--shadow-sm);
+      padding: 0.8rem 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: var(--font-heading);
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo span {
+      color: var(--highlight);
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      list-style: none;
+      gap: 1.8rem;
+    }
+
+    .nav-link {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      position: relative;
+      padding: 0.3rem 0;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: var(--highlight);
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--highlight);
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after,
+    .nav-link.active::after {
+      width: 100%;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    /* Nút Dark Mode Toggle */
+    .theme-toggle-btn {
+      background: var(--bg-alt);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.15rem;
+      transition: var(--transition);
+    }
+
+    .theme-toggle-btn:hover {
+      transform: rotate(20deg) scale(1.08);
+      border-color: var(--highlight);
+      color: var(--highlight);
+    }
+
+    /* Hamburger Menu cho Mobile */
+    .hamburger-btn {
+      display: none;
+      background: transparent;
+      border: none;
+      font-size: 1.4rem;
+      color: var(--text-main);
+      cursor: pointer;
+    }
+
+    /* =========================================================
+       4. SECTION 1: HERO SECTION
+       ========================================================= */
+    .hero-section {
+      padding: 9rem 0 5rem;
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      background: radial-gradient(circle at 10% 20%, rgba(30, 58, 138, 0.06), transparent 35%),
+                  radial-gradient(circle at 90% 80%, rgba(249, 115, 22, 0.08), transparent 35%);
+      position: relative;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      align-items: center;
+      gap: 4rem;
+      animation: fadeInHero 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes fadeInHero {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Cột trái: Ảnh đại diện hình tròn */
+    .hero-avatar-wrapper {
+      position: relative;
+      display: flex;
+      justify-content: center;
+    }
+
+    .avatar-circle {
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      position: relative;
+      padding: 8px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--highlight) 100%);
+      box-shadow: 0 16px 36px rgba(30, 58, 138, 0.22);
+    }
+
+    .avatar-circle img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: 48% 18%;
+      background-color: var(--bg-surface);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .avatar-circle:hover img {
+      transform: scale(1.05);
+    }
+
+    .avatar-badge-exp {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-full);
+      padding: 0.5rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: var(--shadow-md);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .avatar-badge-exp i {
+      color: var(--highlight);
+    }
+
+    /* Cột phải: Thông tin & Lời chào */
+    .hero-content .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 1.1rem;
+      background: var(--primary-soft);
+      color: var(--primary-light);
+      border-radius: var(--radius-full);
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 1.2rem;
+      border: 1px solid var(--border-color);
+    }
+
+    [data-theme="dark"] .hero-content .hero-badge {
+      color: #60a5fa;
+    }
+
+    .hero-name {
+      font-size: clamp(2.3rem, 4.5vw, 3.8rem);
+      font-weight: 800;
+      margin-bottom: 0.6rem;
+      letter-spacing: -0.03em;
+    }
+
+    .hero-name .highlight-text {
+      color: var(--highlight);
+    }
+
+    .hero-tagline {
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    [data-theme="dark"] .hero-tagline {
+      color: #93c5fd;
+    }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      max-width: 620px;
+      line-height: 1.8;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+    }
+
+    /* =========================================================
+       5. SECTION 2: ABOUT ME (VỀ TÔI)
+       ========================================================= */
+    .about-section {
+      background-color: var(--bg-alt);
+    }
+
+    .about-content-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 3rem;
+      box-shadow: var(--shadow-md);
+    }
+
+    .about-intro-text {
+      font-size: 1.15rem;
+      color: var(--text-main);
+      line-height: 1.85;
+      text-align: center;
+      max-width: 850px;
+      margin: 0 auto 3rem;
+    }
+
+    .about-intro-text strong {
+      color: var(--highlight);
+    }
+
+    /* 3 thẻ thông tin & bộ đếm số (Counters) */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.8rem;
+    }
+
+    .stat-card {
+      background: var(--bg-alt);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--highlight);
+    }
+
+    .stat-icon {
+      font-size: 2rem;
+      color: var(--highlight);
+      margin-bottom: 0.8rem;
+    }
+
+    .stat-number {
+      font-family: var(--font-heading);
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-suffix {
+      color: var(--highlight);
+      font-size: 2.2rem;
+    }
+
+    .stat-label {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    /* =========================================================
+       6. SECTION 3: KỸ NĂNG CHUYÊN MÔN (SKILLS)
+       ========================================================= */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 1.8rem;
+    }
+
+    .skill-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 2rem;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .skill-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--highlight);
+    }
+
+    .skill-icon-wrapper {
+      width: 58px;
+      height: 58px;
+      border-radius: var(--radius-md);
+      background: var(--primary-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.3rem;
+      font-size: 1.6rem;
+      color: var(--primary);
+      transition: var(--transition);
+    }
+
+    [data-theme="dark"] .skill-icon-wrapper {
+      color: #60a5fa;
+    }
+
+    .skill-card:hover .skill-icon-wrapper {
+      background: var(--highlight);
+      color: #ffffff;
+      transform: scale(1.05);
+    }
+
+    .skill-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .skill-card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* =========================================================
+       7. SECTION 4: DỰ ÁN NỔI BẬT (PROJECTS)
+       ========================================================= */
+    .projects-section {
+      background-color: var(--bg-alt);
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .project-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .project-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--highlight);
+    }
+
+    .project-image-box {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 16 / 10;
+      background-color: var(--bg-alt);
+    }
+
+    .project-image-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .project-card:hover .project-image-box img {
+      transform: scale(1.08);
+    }
+
+    .project-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .project-card:hover .project-overlay {
+      opacity: 1;
+    }
+
+    .project-overlay .btn-view {
+      padding: 0.6rem 1.4rem;
+      background: var(--highlight);
+      color: #fff;
+      border-radius: var(--radius-full);
+      font-weight: 600;
+      font-size: 0.85rem;
+      transform: translateY(10px);
+      transition: transform 0.3s ease;
+    }
+
+    .project-card:hover .project-overlay .btn-view {
+      transform: translateY(0);
+    }
+
+    .project-content {
+      padding: 1.6rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .project-tag {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.2rem 0.65rem;
+      border-radius: var(--radius-full);
+      background: var(--primary-soft);
+      color: var(--primary-light);
+    }
+
+    [data-theme="dark"] .project-tag {
+      color: #93c5fd;
+    }
+
+    .project-title {
+      font-size: 1.25rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .project-desc {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+      margin-bottom: 1.4rem;
+      flex-grow: 1;
+    }
+
+    .btn-detail-link {
+      color: var(--highlight);
+      font-weight: 600;
+      font-size: 0.92rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .btn-detail-link:hover {
+      gap: 0.7rem;
+    }
+
+    /* =========================================================
+       8. SECTION 5: DỊCH VỤ CUNG CẤP (SERVICES)
+       ========================================================= */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .service-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem 2rem;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .service-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Gói giữa nổi bật */
+    .service-card.popular {
+      border: 2px solid var(--highlight);
+      box-shadow: var(--shadow-lg);
+      transform: scale(1.04);
+      background: var(--bg-surface);
+      z-index: 2;
+    }
+
+    .service-card.popular:hover {
+      transform: scale(1.06) translateY(-4px);
+    }
+
+    .popular-badge {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--highlight);
+      color: #ffffff;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.3rem 1.2rem;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      box-shadow: 0 4px 12px rgba(249, 115, 22, 0.35);
+    }
+
+    .service-name {
+      font-size: 1.35rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .service-price {
+      margin: 1.2rem 0 1.8rem;
+    }
+
+    .price-value {
+      font-family: var(--font-heading);
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .price-sub {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .service-features {
+      list-style: none;
+      margin-bottom: 2rem;
+    }
+
+    .service-features li {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--text-main);
+      font-size: 0.95rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .service-features li i {
+      color: var(--highlight);
+      font-size: 0.9rem;
+    }
+
+    .service-card .btn {
+      width: 100%;
+    }
+
+    /* =========================================================
+       9. SECTION 6: LIÊN HỆ VỚI TÔI (CONTACT)
+       ========================================================= */
+    .contact-section {
+      background-color: var(--bg-alt);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 3.5rem;
+    }
+
+    /* Khối bên trái: Thông tin */
+    .contact-info-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .contact-info-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.4rem 1.6rem;
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+
+    .contact-info-card:hover {
+      transform: translateX(6px);
+      border-color: var(--highlight);
+      box-shadow: var(--shadow-md);
+    }
+
+    .contact-info-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--highlight-soft);
+      color: var(--highlight);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+      flex-shrink: 0;
+    }
+
+    .contact-info-text h4 {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 0.2rem;
+    }
+
+    .contact-info-text p,
+    .contact-info-text a {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .contact-info-text a:hover {
+      color: var(--highlight);
+    }
+
+    /* Khối bên phải: Form liên hệ */
+    .contact-form-panel {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 2.8rem;
+      box-shadow: var(--shadow-md);
+    }
+
+    .form-group {
+      margin-bottom: 1.4rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text-main);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.85rem 1.1rem;
+      border: 1px solid var(--border-color);
+      background: var(--bg-alt);
+      border-radius: var(--radius-sm);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      transition: var(--transition);
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--highlight);
+      box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.18);
+      background: var(--bg-surface);
+    }
+
+    textarea.form-control {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .form-status {
+      margin-top: 1rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      display: none;
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-sm);
+      text-align: center;
+    }
+
+    .form-status.sending {
+      display: block;
+      background: var(--primary-soft);
+      color: var(--primary-light);
+    }
+
+    .form-status.success {
+      display: block;
+      background: rgba(16, 185, 129, 0.12);
+      color: #10b981;
+    }
+
+    /* =========================================================
+       10. SECTION 7: FOOTER & BẢN QUYỀN
+       ========================================================= */
+    .site-footer {
+      background: var(--bg-surface);
+      border-top: 1px solid var(--border-color);
+      padding: 2.5rem 0;
+      text-align: center;
+    }
+
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .footer-social-links {
+      display: flex;
+      gap: 1.2rem;
+    }
+
+    .social-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--bg-alt);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      transition: var(--transition);
+    }
+
+    .social-btn:hover {
+      background: var(--highlight);
+      color: #ffffff;
+      transform: translateY(-4px);
+      box-shadow: 0 8px 18px rgba(249, 115, 22, 0.35);
+    }
+
+    .copyright {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+    }
+
+    /* =========================================================
+       11. RESPONSIVE MEDIA QUERIES (MOBILE & TABLET)
+       ========================================================= */
+    @media (max-width: 1024px) {
+      .hero-grid {
+        grid-template-columns: 280px 1fr;
+        gap: 2.5rem;
+      }
+      .avatar-circle {
+        width: 260px;
+        height: 260px;
+      }
+      .projects-grid,
+      .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .service-card.popular {
+        transform: none;
+      }
+      .service-card.popular:hover {
+        transform: translateY(-6px);
+      }
+    }
+
+    @media (max-width: 820px) {
+      .nav-menu {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: var(--bg-surface);
+        flex-direction: column;
+        padding: 2rem;
+        gap: 1.4rem;
+        box-shadow: var(--shadow-lg);
+        border-bottom: 1px solid var(--border-color);
+        transform: translateY(-150%);
+        transition: transform 0.35s ease;
+      }
+      .nav-menu.open {
+        transform: translateY(0);
+      }
+      .hamburger-btn {
+        display: block;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 2.5rem;
+      }
+      .hero-avatar-wrapper {
+        order: -1;
+      }
+      .hero-cta {
+        justify-content: center;
+      }
+      .hero-tagline {
+        justify-content: center;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+      }
+
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      section {
+        padding: 4rem 0;
+      }
+      .projects-grid,
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+      .about-content-box,
+      .contact-form-panel {
+        padding: 1.8rem 1.2rem;
+      }
+      .btn {
+        width: 100%;
+      }
+      .hero-cta {
+        flex-direction: column;
+      }
+    }
+  </style>
 </head>
 <body>
-    <p>đây là một đoạn văn bản demo</p>
-    <p>chào anh Đức và anh Bảo, em là Cường đang tự học HTML</p>
-    <p>đây là cấu trúc cơ bản của một trang web</p>
+
+  <!-- =========================================================
+       HEADER & NAVIGATION (THANH ĐIỀU HƯỚNG CỐ ĐỊNH)
+       ========================================================= -->
+  <header class="site-header" id="siteHeader">
+    <div class="container nav-container">
+      <!-- Logo thương hiệu -->
+      <a href="#hero" class="logo">
+        <i class="fa-solid fa-code"></i> CƯỜNG<span>.DEV</span>
+      </a>
+
+      <!-- Menu Điều Hướng Chính -->
+      <nav>
+        <ul class="nav-menu" id="navMenu">
+          <li><a href="#hero" class="nav-link active">Trang chủ</a></li>
+          <li><a href="#about" class="nav-link">Về tôi</a></li>
+          <li><a href="#skills" class="nav-link">Kỹ năng</a></li>
+          <li><a href="#projects" class="nav-link">Dự án</a></li>
+          <li><a href="#services" class="nav-link">Dịch vụ</a></li>
+          <li><a href="#contact" class="nav-link">Liên hệ</a></li>
+        </ul>
+      </nav>
+
+      <!-- Các Nút Hành Động (Dark mode & Mobile Menu) -->
+      <div class="nav-actions">
+        <!-- Nút chuyển đổi Dark/Light mode -->
+        <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Đổi giao diện Sáng / Tối" title="Chuyển chế độ Giao diện">
+          <i class="fa-solid fa-moon" id="themeIcon"></i>
+        </button>
+
+        <!-- Nút menu mobile Hamburger -->
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Mở menu điều hướng">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================================================
+       1. HERO SECTION (PHẦN ĐẦU TRANG)
+       ========================================================= -->
+  <section class="hero-section" id="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <!-- Bên trái: Ảnh đại diện hình tròn -->
+        <div class="hero-avatar-wrapper">
+          <div class="avatar-circle">
+            <!-- Ảnh đại diện chính thức của Trần Lê Bảo Cường -->
+            <img src="avatar.jpg" alt="Trần Lê Bảo Cường" id="avatarImg">
+          </div>
+          <div class="avatar-badge-exp">
+            <i class="fa-solid fa-certificate"></i>
+            <span>2 Năm Học Tập &amp; Kinh Nghiệm</span>
+          </div>
+        </div>
+
+        <!-- Bên phải: Tên lớn, Tagline, Nút CTA -->
+        <div class="hero-content">
+          <div class="hero-badge">
+            <i class="fa-solid fa-graduation-cap"></i> KHOA CNTT | LỚP TIN HỌC ỨNG DỤNG
+          </div>
+          <h1 class="hero-name">
+            Xin chào, mình là <br><span class="highlight-text">TRẦN LÊ BẢO CƯỜNG</span>
+          </h1>
+          <div class="hero-tagline">
+            <i class="fa-solid fa-bolt"></i> Không ngừng học hỏi
+          </div>
+          <p class="hero-desc">
+            Chào mừng bạn đến với không gian cá nhân của mình! Mình là một lập trình viên trẻ đam mê công nghệ, chuyên xây dựng giao diện web chuẩn chỉnh, tối ưu trải nghiệm người dùng và phát triển ứng dụng giải quyết các bài toán thực tế.
+          </p>
+          <div class="hero-cta">
+            <a href="#projects" class="btn btn-primary">
+              <i class="fa-solid fa-briefcase"></i> Xem dự án
+            </a>
+            <a href="#contact" class="btn btn-outline">
+              <i class="fa-solid fa-paper-plane"></i> Liên hệ ngay
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       2. ABOUT ME (VỀ TÔI)
+       ========================================================= */
+  -->
+  <section class="about-section" id="about">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Hành Trình &amp; Mục Tiêu</span>
+        <h2>Về tôi</h2>
+        <p>Hiểu thêm về định hướng chuyên môn và tinh thần làm việc của mình</p>
+      </div>
+
+      <div class="about-content-box">
+        <!-- Đoạn text 3-4 dòng giới thiệu bản thân mẫu chuyên nghiệp -->
+        <p class="about-intro-text">
+          Xuất thân từ <strong>Khoa Công nghệ Thông tin - Chuyên ngành Tin học Ứng dụng</strong> với hơn <strong>2 năm</strong> liên tục học tập và thực hành, mình luôn tâm niệm rằng sự kiên định và tinh thần cầu tiến là chìa khóa tạo nên các sản phẩm chất lượng. Mình yêu thích việc chuyển hóa những ý tưởng thiết kế phức tạp thành các giao diện web mượt mà, tối ưu trên mọi màn hình và thân thiện với người dùng.
+        </p>
+
+        <!-- 3 Thẻ thông tin & Bộ đếm số tự động khi cuộn đến -->
+        <div class="stats-grid" id="statsGrid">
+          <!-- Thẻ 1: Lớp / Khoa -->
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-users-line"></i></div>
+            <div class="stat-number">
+              <span class="counter" data-target="100">0</span><span class="stat-suffix">%</span>
+            </div>
+            <div class="stat-label">Khoa CNTT - Tin Học Ứng Dụng</div>
+          </div>
+
+          <!-- Thẻ 2: Số dự án đã làm -->
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-diagram-project"></i></div>
+            <div class="stat-number">
+              <span class="counter" data-target="18">0</span><span class="stat-suffix">+</span>
+            </div>
+            <div class="stat-label">Dự Án Đã Hoàn Thành</div>
+          </div>
+
+          <!-- Thẻ 3: Đánh giá giảng viên -->
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-award"></i></div>
+            <div class="stat-number">
+              <span class="counter" data-target="96">0</span><span class="stat-suffix">%</span>
+            </div>
+            <div class="stat-label">Đánh Giá Xuất Sắc Của Giảng Viên</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       3. KỸ NĂNG CHUYÊN MÔN (SKILLS)
+       ========================================================= -->
+  <section class="skills-section" id="skills">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Năng Lực Cốt Lõi</span>
+        <h2>Kỹ năng chuyên môn</h2>
+        <p>Bộ công cụ và công nghệ mình vận dụng để hiện thực hóa các giải pháp</p>
+      </div>
+
+      <!-- Grid 6 ô kỹ năng dạng card -->
+      <div class="skills-grid">
+        <!-- Kỹ năng 1 -->
+        <div class="skill-card">
+          <div class="skill-icon-wrapper">
+            <i class="fa-brands fa-html5"></i>
+          </div>
+          <h3>HTML5 &amp; CSS3 Hiện Đại</h3>
+          <p>Xây dựng cấu trúc web ngữ nghĩa chuẩn SEO, hiệu ứng chuyển động mượt mà và tối ưu bố cục với CSS Flexbox/Grid.</p>
+        </div>
+
+        <!-- Kỹ năng 2 -->
+        <div class="skill-card">
+          <div class="skill-icon-wrapper">
+            <i class="fa-brands fa-js"></i>
+          </div>
+          <h3>JavaScript Thuần (ES6+)</h3>
+          <p>Xử lý sự kiện tương tác DOM linh hoạt, lập trình bất đồng bộ (Async/Await, Fetch API) và giải thuật logic tối ưu.</p>
+        </div>
+
+        <!-- Kỹ năng 3 -->
+        <div class="skill-card">
+          <div class="skill-icon-wrapper">
+            <i class="fa-solid fa-mobile-screen"></i>
+          </div>
+          <h3>Thiết Kế Responsive</h3>
+          <p>Đảm bảo giao diện hiển thị sắc nét, co giãn linh hoạt trên mọi kích thước màn hình điện thoại, máy tính bảng và desktop.</p>
+        </div>
+
+        <!-- Kỹ năng 4 -->
+        <div class="skill-card">
+          <div class="skill-icon-wrapper">
+            <i class="fa-brands fa-python"></i>
+          </div>
+          <h3>Lập Trình Python Căn Bản</h3>
+          <p>Xử lý dữ liệu, viết kịch bản tự động hóa công việc và thao tác các cấu trúc dữ liệu thực tế (JSON, Dictionary, List).</p>
+        </div>
+
+        <!-- Kỹ năng 5 -->
+        <div class="skill-card">
+          <div class="skill-icon-wrapper">
+            <i class="fa-brands fa-git-alt"></i>
+          </div>
+          <h3>Git &amp; Quản Lý Mã Nguồn</h3>
+          <p>Sử dụng thành thạo Git command line và nền tảng GitHub để phân nhánh, theo dõi lịch sử commit và quản lý dự án.</p>
+        </div>
+
+        <!-- Kỹ năng 6 -->
+        <div class="skill-card">
+          <div class="skill-icon-wrapper">
+            <i class="fa-solid fa-laptop-file"></i>
+          </div>
+          <h3>Tin Học Ứng Dụng &amp; Văn Phòng</h3>
+          <p>Thành thạo công cụ văn phòng nâng cao, tối ưu biểu mẫu báo cáo, quản trị cơ sở dữ liệu nhỏ và thiết lập phần mềm chuyên dụng.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       4. DỰ ÁN NỔI BẬT (PROJECTS)
+       ========================================================= -->
+  <section class="projects-section" id="projects">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Thực Chiến</span>
+        <h2>Dự án nổi bật</h2>
+        <p>Các sản phẩm tiêu biểu mình đã tự tay nghiên cứu, thiết kế và phát triển</p>
+      </div>
+
+      <!-- Grid 3 cột (responsive 1 cột trên mobile) gồm 6 dự án -->
+      <div class="projects-grid">
+        <!-- Dự án 1 -->
+        <div class="project-card">
+          <div class="project-image-box">
+            <img src="https://placehold.co/600x400/1e3a8a/ffffff?text=Landing+Page+Web" alt="Landing Page Doanh Nghiệp">
+            <div class="project-overlay">
+              <span class="btn-view"><i class="fa-solid fa-eye"></i> Xem Demo</span>
+            </div>
+          </div>
+          <div class="project-content">
+            <div class="project-tags">
+              <span class="project-tag">HTML5</span>
+              <span class="project-tag">CSS3</span>
+              <span class="project-tag">JavaScript</span>
+            </div>
+            <h3 class="project-title">Landing Page Giới Thiệu Doanh Nghiệp</h3>
+            <p class="project-desc">Trang giới thiệu dịch vụ chuẩn SEO, tốc độ tải trang nhanh dưới 1 giây và giao diện responsive bắt mắt.</p>
+            <a href="#contact" class="btn-detail-link">Xem chi tiết <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <!-- Dự án 2 -->
+        <div class="project-card">
+          <div class="project-image-box">
+            <img src="https://placehold.co/600x400/f97316/ffffff?text=E-Commerce+UI" alt="Giao diện Website Bán Hàng">
+            <div class="project-overlay">
+              <span class="btn-view"><i class="fa-solid fa-eye"></i> Xem Demo</span>
+            </div>
+          </div>
+          <div class="project-content">
+            <div class="project-tags">
+              <span class="project-tag">Frontend</span>
+              <span class="project-tag">DOM Manipulation</span>
+              <span class="project-tag">UI/UX</span>
+            </div>
+            <h3 class="project-title">Giao Diện Shop Trực Tuyến &amp; Giỏ Hàng</h3>
+            <p class="project-desc">Tích hợp lọc sản phẩm theo danh mục, tính tổng tiền trong giỏ hàng và lưu trạng thái mua sắm vào LocalStorage.</p>
+            <a href="#contact" class="btn-detail-link">Xem chi tiết <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <!-- Dự án 3 -->
+        <div class="project-card">
+          <div class="project-image-box">
+            <img src="https://placehold.co/600x400/0f766e/ffffff?text=Python+Billing+App" alt="Hệ Thống Tính Tiền Hóa Đơn">
+            <div class="project-overlay">
+              <span class="btn-view"><i class="fa-solid fa-eye"></i> Xem Demo</span>
+            </div>
+          </div>
+          <div class="project-content">
+            <div class="project-tags">
+              <span class="project-tag">Python</span>
+              <span class="project-tag">Data Logic</span>
+              <span class="project-tag">CLI Tool</span>
+            </div>
+            <h3 class="project-title">Phần Mềm Quản Lý &amp; Tính Tiền Điện</h3>
+            <p class="project-desc">Chương trình Python tính bậc thang điện sinh hoạt, xuất hóa đơn tự động và quản lý lịch sử thanh toán người dùng.</p>
+            <a href="#contact" class="btn-detail-link">Xem chi tiết <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <!-- Dự án 4 -->
+        <div class="project-card">
+          <div class="project-image-box">
+            <img src="https://placehold.co/600x400/4338ca/ffffff?text=Music+Playlist+JSON" alt="Ứng Dụng Quản Lý Playlist">
+            <div class="project-overlay">
+              <span class="btn-view"><i class="fa-solid fa-eye"></i> Xem Demo</span>
+            </div>
+          </div>
+          <div class="project-content">
+            <div class="project-tags">
+              <span class="project-tag">Python</span>
+              <span class="project-tag">JSON File</span>
+              <span class="project-tag">CRUD</span>
+            </div>
+            <h3 class="project-title">Hệ Thống Quản Lý Playlist Nhạc JSON</h3>
+            <p class="project-desc">Xử lý thêm, sửa, xóa bài hát, tìm kiếm bài hát theo nghệ sĩ và lưu trữ cấu trúc danh mục bằng tệp JSON chuẩn xác.</p>
+            <a href="#contact" class="btn-detail-link">Xem chi tiết <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <!-- Dự án 5 -->
+        <div class="project-card">
+          <div class="project-image-box">
+            <img src="https://placehold.co/600x400/c2410c/ffffff?text=Mini+Game+Interactive" alt="Game Kéo Búa Bao">
+            <div class="project-overlay">
+              <span class="btn-view"><i class="fa-solid fa-eye"></i> Xem Demo</span>
+            </div>
+          </div>
+          <div class="project-content">
+            <div class="project-tags">
+              <span class="project-tag">JavaScript</span>
+              <span class="project-tag">Canvas/DOM</span>
+              <span class="project-tag">Game Logic</span>
+            </div>
+            <h3 class="project-title">Mini Game Tương Tác &amp; Tính Điểm</h3>
+            <p class="project-desc">Trò chơi rèn luyện phản xạ với thuật toán ngẫu nhiên AI, bảng xếp hạng điểm cao và hiệu ứng âm thanh sống động.</p>
+            <a href="#contact" class="btn-detail-link">Xem chi tiết <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+
+        <!-- Dự án 6 -->
+        <div class="project-card">
+          <div class="project-image-box">
+            <img src="https://placehold.co/600x400/0369a1/ffffff?text=Personal+Portfolio" alt="Website Portfolio Cá Nhân">
+            <div class="project-overlay">
+              <span class="btn-view"><i class="fa-solid fa-eye"></i> Xem Demo</span>
+            </div>
+          </div>
+          <div class="project-content">
+            <div class="project-tags">
+              <span class="project-tag">HTML/CSS/JS</span>
+              <span class="project-tag">Dark Mode</span>
+              <span class="project-tag">Single Page</span>
+            </div>
+            <h3 class="project-title">Trang Web Portfolio Đa Năng</h3>
+            <p class="project-desc">Thiết kế chuẩn công thái học với chế độ Sáng/Tối thông minh, thanh điều hướng linh hoạt và bộ lọc dự án tiện lợi.</p>
+            <a href="#contact" class="btn-detail-link">Xem chi tiết <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       5. DỊCH VỤ CUNG CẤP (SERVICES)
+       ========================================================= -->
+  <section class="services-section" id="services">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Hợp Tác Phát Triển</span>
+        <h2>Dịch vụ tôi cung cấp</h2>
+        <p>Các giải pháp công nghệ phù hợp với cá nhân, cửa hàng và doanh nghiệp nhỏ</p>
+      </div>
+
+      <!-- 3 Gói Dịch Vụ - Gói giữa nổi bật -->
+      <div class="services-grid">
+        <!-- Gói 1: Cơ bản -->
+        <div class="service-card">
+          <h3 class="service-name">Gói Cơ Bản (Landing Page)</h3>
+          <p class="service-sub">Thích hợp cho cá nhân &amp; giới thiệu dịch vụ</p>
+          <div class="service-price">
+            <span class="price-value">1.800.000đ</span>
+            <span class="price-sub">/ dự án</span>
+          </div>
+          <ul class="service-features">
+            <li><i class="fa-solid fa-check"></i> Thiết kế 1 trang (Single Page) chuẩn SEO</li>
+            <li><i class="fa-solid fa-check"></i> Giao diện Responsive trên di động &amp; PC</li>
+            <li><i class="fa-solid fa-check"></i> Tích hợp form nhận thông tin khách hàng</li>
+            <li><i class="fa-solid fa-check"></i> Bàn giao toàn bộ mã nguồn sạch sẽ</li>
+            <li><i class="fa-solid fa-check"></i> Hỗ trợ bảo hành kỹ thuật 1 tháng</li>
+          </ul>
+          <a href="#contact" class="btn btn-outline">Chọn Gói Này</a>
+        </div>
+
+        <!-- Gói 2: Nổi bật / Phổ biến -->
+        <div class="service-card popular">
+          <div class="popular-badge">Phổ biến</div>
+          <h3 class="service-name">Gói Doanh Nghiệp (Website Chuẩn)</h3>
+          <p class="service-sub">Lựa chọn tối ưu cho cửa hàng &amp; công ty nhỏ</p>
+          <div class="service-price">
+            <span class="price-value">3.900.000đ</span>
+            <span class="price-sub">/ dự án</span>
+          </div>
+          <ul class="service-features">
+            <li><i class="fa-solid fa-check"></i> Thiết kế đa trang hoặc Single Page cao cấp</li>
+            <li><i class="fa-solid fa-check"></i> Tích hợp chế độ Dark Mode hiện đại</li>
+            <li><i class="fa-solid fa-check"></i> Tối ưu tốc độ tải trang cao (Google PageSpeed)</li>
+            <li><i class="fa-solid fa-check"></i> Tích hợp liên hệ Zalo, Messenger, Hotline</li>
+            <li><i class="fa-solid fa-check"></i> Hướng dẫn quản trị &amp; bảo hành 3 tháng</li>
+          </ul>
+          <a href="#contact" class="btn btn-primary">Chọn Gói Này</a>
+        </div>
+
+        <!-- Gói 3: Nâng cao -->
+        <div class="service-card">
+          <h3 class="service-name">Gói Tùy Biến (Web App &amp; Script)</h3>
+          <p class="service-sub">Dành cho nhu cầu tự động hóa và phần mềm riêng</p>
+          <div class="service-price">
+            <span class="price-value">6.500.000đ</span>
+            <span class="price-sub">/ dự án</span>
+          </div>
+          <ul class="service-features">
+            <li><i class="fa-solid fa-check"></i> Xây dựng tính năng tính toán, xử lý logic riêng</li>
+            <li><i class="fa-solid fa-check"></i> Viết kịch bản tự động hóa dữ liệu bằng Python</li>
+            <li><i class="fa-solid fa-check"></i> Kết nối cơ sở dữ liệu và API bên thứ ba</li>
+            <li><i class="fa-solid fa-check"></i> Triển khai lên máy chủ &amp; tên miền hoàn chỉnh</li>
+            <li><i class="fa-solid fa-check"></i> Đồng hành hỗ trợ kỹ thuật lâu dài</li>
+          </ul>
+          <a href="#contact" class="btn btn-outline">Chọn Gói Này</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       6. LIÊN HỆ VỚI TÔI (CONTACT)
+       ========================================================= -->
+  <section class="contact-section" id="contact">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Giao Lưu &amp; Kết Nối</span>
+        <h2>Liên hệ với tôi</h2>
+        <p>Bạn có dự án cần thực hiện hoặc muốn trao đổi chuyên môn? Hãy gửi lời nhắn ngay!</p>
+      </div>
+
+      <div class="contact-grid">
+        <!-- Bên trái: Thông tin liên hệ -->
+        <div class="contact-info-panel">
+          <!-- Email -->
+          <div class="contact-info-card">
+            <div class="contact-info-icon"><i class="fa-solid fa-envelope"></i></div>
+            <div class="contact-info-text">
+              <h4>Email liên hệ:</h4>
+              <p><a href="mailto:tranc3190@gmail.com">tranc3190@gmail.com</a></p>
+            </div>
+          </div>
+
+          <!-- Số điện thoại -->
+          <div class="contact-info-card">
+            <div class="contact-info-icon"><i class="fa-solid fa-phone"></i></div>
+            <div class="contact-info-text">
+              <h4>Số điện thoại / Zalo:</h4>
+              <p><a href="tel:0399344476">0399 344 476</a></p>
+            </div>
+          </div>
+
+          <!-- Địa chỉ -->
+          <div class="contact-info-card">
+            <div class="contact-info-icon"><i class="fa-solid fa-location-dot"></i></div>
+            <div class="contact-info-text">
+              <h4>Địa chỉ hiện tại:</h4>
+              <p>70 Nguyễn Huệ, Thuận Hóa, TP. Huế</p>
+            </div>
+          </div>
+
+          <!-- Mạng xã hội Facebook -->
+          <div class="contact-info-card">
+            <div class="contact-info-icon"><i class="fa-brands fa-facebook"></i></div>
+            <div class="contact-info-text">
+              <h4>Facebook cá nhân:</h4>
+              <p><a href="https://www.facebook.com/tran.le.bao.cuong.91487" target="_blank" rel="noopener noreferrer">Bảo Cường (Facebook Profile) ↗</a></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bên phải: Form gửi tin nhắn liên hệ -->
+        <div class="contact-form-panel">
+          <form id="contactForm">
+            <div class="form-group">
+              <label for="userName">Họ và tên của bạn *</label>
+              <input type="text" id="userName" class="form-control" placeholder="Ví dụ: Nguyễn Văn A" required>
+            </div>
+
+            <div class="form-group">
+              <label for="userEmail">Địa chỉ Email *</label>
+              <input type="email" id="userEmail" class="form-control" placeholder="Ví dụ: yourname@gmail.com" required>
+            </div>
+
+            <div class="form-group">
+              <label for="userPhone">Số điện thoại liên hệ *</label>
+              <input type="tel" id="userPhone" class="form-control" placeholder="Ví dụ: 0987 654 321" required>
+            </div>
+
+            <div class="form-group">
+              <label for="userMessage">Nội dung tin nhắn *</label>
+              <textarea id="userMessage" class="form-control" rows="4" placeholder="Chia sẻ ý tưởng hoặc yêu cầu dự án của bạn..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="btnSubmitForm" style="width: 100%;">
+              <i class="fa-solid fa-paper-plane"></i> Gửi tin nhắn
+            </button>
+
+            <!-- Khối trạng thái phản hồi của Form -->
+            <div class="form-status" id="formStatus"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       7. FOOTER (CHÂN TRANG)
+       ========================================================= -->
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <!-- Các liên kết mạng xã hội -->
+      <div class="footer-social-links">
+        <a href="https://www.facebook.com/tran.le.bao.cuong.91487" target="_blank" rel="noopener noreferrer" class="social-btn" title="Facebook">
+          <i class="fa-brands fa-facebook-f"></i>
+        </a>
+        <a href="mailto:tranc3190@gmail.com" class="social-btn" title="Gửi Email">
+          <i class="fa-solid fa-envelope"></i>
+        </a>
+        <a href="tel:0399344476" class="social-btn" title="Gọi điện thoại">
+          <i class="fa-solid fa-phone"></i>
+        </a>
+        <a href="https://github.com/tranlebaocuong/hoclaptrinh" target="_blank" rel="noopener noreferrer" class="social-btn" title="GitHub">
+          <i class="fa-brands fa-github"></i>
+        </a>
+      </div>
+
+      <!-- Bản quyền và tác giả -->
+      <p class="copyright">
+        © <span id="currentYear">2026</span> <strong>TRẦN LÊ BẢO CƯỜNG</strong>. Tất cả quyền được bảo lưu.
+      </p>
+    </div>
+  </footer>
+
+  <!-- =========================================================
+       JAVASCRIPT THUẦN (LOGIC VÀ TƯƠNG TÁC NGƯỜI DÙNG)
+       ========================================================= -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+      /* -----------------------------------------------------------
+         1. CHỨC NĂNG GIAO DIỆN SÁNG / TỐI (DARK / LIGHT MODE)
+         ----------------------------------------------------------- */
+      const themeToggleBtn = document.getElementById('themeToggleBtn');
+      const themeIcon = document.getElementById('themeIcon');
+      const root = document.documentElement;
+
+      // Đọc trạng thái đã lưu trong LocalStorage hoặc theo tùy chọn của máy
+      const savedTheme = localStorage.getItem('portfolio_theme');
+      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const initialTheme = savedTheme ? savedTheme : (systemPrefersDark ? 'dark' : 'light');
+
+      function updateTheme(theme) {
+        if (theme === 'dark') {
+          root.setAttribute('data-theme', 'dark');
+          themeIcon.classList.remove('fa-moon');
+          themeIcon.classList.add('fa-sun');
+        } else {
+          root.removeAttribute('data-theme');
+          themeIcon.classList.remove('fa-sun');
+          themeIcon.classList.add('fa-moon');
+        }
+        localStorage.setItem('portfolio_theme', theme);
+      }
+
+      updateTheme(initialTheme);
+
+      if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', () => {
+          const currentTheme = root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+          const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+          updateTheme(nextTheme);
+        });
+      }
+
+      /* -----------------------------------------------------------
+         2. STICKY HEADER ĐỔI BACKGROUND KHI CUỘN TRANG
+         ----------------------------------------------------------- */
+      const siteHeader = document.getElementById('siteHeader');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 40) {
+          siteHeader.classList.add('scrolled');
+        } else {
+          siteHeader.classList.remove('scrolled');
+        }
+      });
+
+      /* -----------------------------------------------------------
+         3. MENU HAMBURGER CHO THIẾT BỊ DI ĐỘNG (MOBILE)
+         ----------------------------------------------------------- */
+      const hamburgerBtn = document.getElementById('hamburgerBtn');
+      const navMenu = document.getElementById('navMenu');
+
+      if (hamburgerBtn && navMenu) {
+        hamburgerBtn.addEventListener('click', () => {
+          navMenu.classList.toggle('open');
+          const isOpen = navMenu.classList.contains('open');
+          hamburgerBtn.innerHTML = isOpen ? '<i class="fa-solid fa-xmark"></i>' : '<i class="fa-solid fa-bars"></i>';
+        });
+
+        // Tự động đóng menu khi bấm vào bất kỳ liên kết nào
+        const navLinks = navMenu.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+          link.addEventListener('click', () => {
+            navMenu.classList.remove('open');
+            hamburgerBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
+          });
+        });
+      }
+
+      /* -----------------------------------------------------------
+         4. ACTIVE NAVIGATION KHI CUỘN ĐẾN CÁC SECTION (SCROLLSPY)
+         ----------------------------------------------------------- */
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('.nav-link');
+
+      window.addEventListener('scroll', () => {
+        let currentSectionId = '';
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop - 120;
+          const sectionHeight = section.offsetHeight;
+          if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+            currentSectionId = section.getAttribute('id');
+          }
+        });
+
+        navLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === `#${currentSectionId}`) {
+            link.classList.add('active');
+          }
+        });
+      });
+
+      /* -----------------------------------------------------------
+         5. HIỆU ỨNG ĐẾM SỐ TỰ ĐỘNG (STATS COUNTER ANIMATION)
+         ----------------------------------------------------------- */
+      const statsSection = document.getElementById('statsGrid');
+      const counters = document.querySelectorAll('.counter');
+      let counterTriggered = false;
+
+      function startCounters() {
+        counters.forEach(counter => {
+          const target = +counter.getAttribute('data-target');
+          const duration = 1600; // Thời gian chạy animation (ms)
+          const startTime = performance.now();
+
+          function updateCounter(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            // Hàm làm chậm mượt mà (easeOutQuad)
+            const easeProgress = 1 - (1 - progress) * (1 - progress);
+            const currentVal = Math.floor(easeProgress * target);
+
+            counter.textContent = currentVal;
+
+            if (progress < 1) {
+              requestAnimationFrame(updateCounter);
+            } else {
+              counter.textContent = target;
+            }
+          }
+          requestAnimationFrame(updateCounter);
+        });
+      }
+
+      // Theo dõi khi người dùng cuộn đến phần Stats
+      if ('IntersectionObserver' in window && statsSection) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting && !counterTriggered) {
+              counterTriggered = true;
+              startCounters();
+            }
+          });
+        }, { threshold: 0.3 });
+        observer.observe(statsSection);
+      } else {
+        // Fallback cho trình duyệt cũ
+        startCounters();
+      }
+
+      /* -----------------------------------------------------------
+         6. XỬ LÝ SUBMIT FORM LIÊN HỆ (DEMO MÔ PHỎNG)
+         ----------------------------------------------------------- */
+      const contactForm = document.getElementById('contactForm');
+      const formStatus = document.getElementById('formStatus');
+      const btnSubmitForm = document.getElementById('btnSubmitForm');
+
+      if (contactForm && formStatus) {
+        contactForm.addEventListener('submit', (e) => {
+          e.preventDefault(); // Chặn tải lại trang
+
+          // Trạng thái đang gửi
+          btnSubmitForm.disabled = true;
+          formStatus.className = 'form-status sending';
+          formStatus.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang gửi tin nhắn...';
+
+          // Mô phỏng độ trễ mạng 1.2 giây
+          setTimeout(() => {
+            formStatus.className = 'form-status success';
+            formStatus.innerHTML = '<i class="fa-solid fa-circle-check"></i> Gửi thành công! Cảm ơn bạn, Cường sẽ phản hồi bạn trong thời gian sớm nhất.';
+            btnSubmitForm.disabled = false;
+            contactForm.reset();
+
+            // Tự ẩn thông báo sau 5 giây
+            setTimeout(() => {
+              formStatus.style.display = 'none';
+              formStatus.className = 'form-status';
+            }, 5000);
+          }, 1200);
+        });
+      }
+
+      /* -----------------------------------------------------------
+         7. TỰ ĐỘNG CẬP NHẬT NĂM HIỆN TẠI Ở FOOTER
+         ----------------------------------------------------------- */
+      const currentYearEl = document.getElementById('currentYear');
+      if (currentYearEl) {
+        currentYearEl.textContent = new Date().getFullYear();
+      }
+
+    });
+  </script>
 </body>
 </html>

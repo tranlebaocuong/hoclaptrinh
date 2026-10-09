@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎵 Trình Quản Lý & Phát Nhạc - Music Player</title>
+  
+  <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <link rel="stylesheet" href="playlist.css">
+</head>
+<body>
+  <!-- Hiệu ứng ánh sáng nền -->
+  <div class="background-decorations">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="logo-area">
+        <div class="logo-icon">
+          <i class="fa-solid fa-compact-disc spin-slow" id="headerVinyl"></i>
+        </div>
+        <div>
+          <h1>Music Playlist & Player</h1>
+          <p class="subtitle">Quản lý và nghe nhạc trực tiếp trên trình duyệt</p>
+        </div>
+      </div>
+      <div class="header-badges">
+        <span class="badge" id="songCountBadge"><i class="fa-solid fa-music"></i> 3 bài hát</span>
+        <button id="themeToggleBtn" class="btn-icon" title="Đổi giao diện Sáng / Tối">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Thẻ Audio Player thật của HTML5 -->
+    <audio id="realAudio" preload="auto"></audio>
+
+    <!-- Trình phát nhạc chính (Full Music Player Card) -->
+    <section class="now-playing-card" id="nowPlayingCard">
+      <div class="player-top">
+        <div class="track-thumbnail" id="trackThumb">
+          <i class="fa-solid fa-headphones-simple"></i>
+        </div>
+        <div class="track-info">
+          <div class="track-status" id="trackStatus">Sẵn sàng phát</div>
+          <div class="track-title" id="currentTrackTitle">Shape of You</div>
+          <div class="track-source" id="currentTrackSource"><i class="fa-solid fa-bolt"></i> Bản nhạc demo chất lượng cao</div>
+        </div>
+        <div class="equalizer-waves" id="equalizer">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+
+      <!-- Thanh tiến trình bài hát (Progress Bar / Seek) -->
+      <div class="progress-container">
+        <span class="time-label" id="currentTimeLabel">0:00</span>
+        <div class="progress-bar-wrapper">
+          <input type="range" id="progressBar" min="0" max="100" value="0" step="0.1" title="Tua nhạc">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <span class="time-label" id="durationLabel">0:00</span>
+      </div>
+
+      <!-- Các nút điều khiển & Âm lượng -->
+      <div class="player-bottom">
+        <div class="extra-controls">
+          <button id="shuffleBtn" class="btn-ctrl" title="Bật/Tắt phát ngẫu nhiên"><i class="fa-solid fa-shuffle"></i></button>
+          <button id="repeatBtn" class="btn-ctrl" title="Bật/Tắt lặp lại"><i class="fa-solid fa-repeat"></i></button>
+        </div>
+
+        <div class="main-controls">
+          <button id="prevTrackBtn" class="btn-ctrl" title="Bài trước (Prev)"><i class="fa-solid fa-backward-step"></i></button>
+          <button id="playPauseBtn" class="btn-ctrl btn-play" title="Phát / Tạm dừng"><i class="fa-solid fa-play"></i></button>
+          <button id="nextTrackBtn" class="btn-ctrl" title="Bài kế tiếp (Next)"><i class="fa-solid fa-forward-step"></i></button>
+        </div>
+
+        <div class="volume-container">
+          <button id="muteBtn" class="btn-ctrl" title="Tắt / Bật tiếng"><i class="fa-solid fa-volume-high"></i></button>
+          <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.8" title="Âm lượng">
+        </div>
+      </div>
+    </section>
+
+    <!-- Khu vực nhập liệu & thêm bài hát -->
+    <section class="action-section">
+      <div class="input-card">
+        <div class="input-row">
+          <div class="input-wrapper">
+            <i class="fa-solid fa-music input-icon"></i>
+            <input type="text" id="songInput" placeholder="Nhập tên bài hát muốn thêm..." maxlength="80" autocomplete="off">
+          </div>
+          <button id="addSongBtn" class="btn btn-primary">
+            <i class="fa-solid fa-plus"></i> Thêm bài hát
+          </button>
+        </div>
+
+        <div class="upload-row">
+          <label for="audioFileInput" class="btn-upload" title="Chọn file nhạc mp3, wav từ máy tính của bạn">
+            <i class="fa-solid fa-folder-open"></i> <span>Chọn file nhạc MP3 từ máy tính để nghe</span>
+          </label>
+          <input type="file" id="audioFileInput" accept="audio/*" multiple style="display: none;">
+          <span class="upload-tip">💡 Hỗ trợ MP3, WAV, FLAC, M4A — Nghe được ngay!</span>
+        </div>
+      </div>
+
+      <!-- Thanh công cụ Tìm kiếm & Chức năng phụ -->
+      <div class="toolbar">
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="searchInput" placeholder="Tìm kiếm bài hát trong playlist...">
+        </div>
+        <div class="toolbar-actions">
+          <button id="openReorderModalBtn" class="btn btn-secondary" title="Đổi vị trí theo STT tương tự console">
+            <i class="fa-solid fa-arrows-up-down"></i> Đổi thứ tự STT
+          </button>
+          <button id="resetDefaultBtn" class="btn btn-ghost" title="Khôi phục danh sách mặc định">
+            <i class="fa-solid fa-rotate-left"></i> Khôi phục
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Danh sách bài hát (Playlist) -->
+    <main class="playlist-section">
+      <div class="playlist-header">
+        <span class="col-stt">#</span>
+        <span class="col-title">Tên bài hát & Nguồn âm thanh</span>
+        <span class="col-status">Trạng thái</span>
+        <span class="col-actions">Thao tác</span>
+      </div>
+
+      <ul class="playlist-list" id="playlistUl">
+        <!-- Render động từ JS -->
+      </ul>
+
+      <div class="empty-state" id="emptyState" style="display: none;">
+        <i class="fa-solid fa-music-slash"></i>
+        <h3>Playlist hiện đang trống!</h3>
+        <p>Hãy nhập tên hoặc chọn file MP3 ở trên để bắt đầu thêm bài hát vào danh sách phát.</p>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>🎧 <em>Bạn có thể click vào bất kỳ bài hát nào để nghe, hoặc kéo thả (Drag & Drop) để sắp xếp vị trí!</em></p>
+    </footer>
+  </div>
+
+  <!-- MODAL: ĐỔI VỊ TRÍ THEO SỐ THỨ TỰ (STT) -->
+  <div class="modal-overlay" id="reorderModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-arrows-up-down"></i> Thay đổi thứ tự bài hát</h3>
+        <button class="modal-close-btn" id="closeReorderModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-desc">Nhập số thứ tự (STT) bài muốn di chuyển và vị trí mới:</p>
+        <div class="form-group">
+          <label for="fromIndexInput">STT bài muốn chuyển (Từ):</label>
+          <input type="number" id="fromIndexInput" min="1" placeholder="Ví dụ: 3">
+        </div>
+        <div class="form-group">
+          <label for="toIndexInput">Chuyển đến vị trí số mấy (Đến):</label>
+          <input type="number" id="toIndexInput" min="1" placeholder="Ví dụ: 1">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" id="cancelReorderBtn">Hủy bỏ</button>
+        <button class="btn btn-primary" id="confirmReorderBtn">Xác nhận chuyển</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: XÁC NHẬN XÓA BÀI HÁT -->
+  <div class="modal-overlay" id="deleteModal">
+    <div class="modal-card modal-danger">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-triangle-exclamation"></i> Xác nhận xóa bài hát</h3>
+        <button class="modal-close-btn" id="closeDeleteModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Bạn có chắc chắn muốn xóa bài hát <strong id="deleteSongName"></strong> khỏi danh sách?</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" id="cancelDeleteBtn">Không, giữ lại</button>
+        <button class="btn btn-danger" id="confirmDeleteBtn">Xác nhận xóa</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATIONS -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="playlist.js"></script>
+</body>
+</html>

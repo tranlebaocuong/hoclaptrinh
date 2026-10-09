@@ -3,72 +3,222 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Giới thiệu bản thân</title>
+  <title>Trần Lê Bảo Cường | Giới thiệu bản thân & Hành trình Tự học Lập trình</title>
+  <meta name="description" content="Trang giới thiệu bản thân của Trần Lê Bảo Cường - Người tự học lập trình web & Python ở tuổi 27. Chia sẻ hành trình, kỹ năng và các dự án thực tế.">
   <link rel="stylesheet" href="gioi-thieu.css">
 </head>
 <body>
   <div class="page-wrapper">
-    <header>
-      <h1>Xin chào, mình là: TRẦN LÊ BẢO CƯỜNG </h1>
-      <p>Một bạn trẻ đang tự học lập trình ở tuổi 27,mình yêu thích công nghệ và lập trình và hiện tại mình đang tạo ra một trang để giới thiệu về bản thân mình.</p>
+    <!-- Nút đổi giao diện Sáng / Tối -->
+    <div class="top-bar">
+      <div class="badge-status">
+        <span class="status-dot"></span>
+        <span class="status-text">Đang tự học &amp; sẵn sàng kết nối</span>
+      </div>
+      <button class="theme-toggle" id="themeToggle" aria-label="Chuyển đổi giao diện sáng/tối" title="Chuyển chế độ Sáng / Tối">
+        <span class="theme-icon" id="themeIcon">🌙</span>
+      </button>
+    </div>
+
+    <!-- Header chính -->
+    <header class="hero-header">
+      <div class="avatar-container">
+        <img src="avatar.jpg" alt="Trần Lê Bảo Cường" class="avatar-img">
+      </div>
+      <h1 id="greetingHeading">
+        <span class="greeting-prefix">Xin chào,</span> mình là <span class="author-name">TRẦN LÊ BẢO CƯỜNG</span>
+      </h1>
+      <p class="hero-subtitle">
+        Một người trẻ 27 tuổi đang kiên trì theo đuổi đam mê <strong>Lập trình Web &amp; Python</strong>. Mình tin rằng không bao giờ là quá muộn để bắt đầu học hỏi và biến những dòng code thành các sản phẩm thực tế, hữu ích.
+      </p>
+      
+      <div class="header-actions">
+        <a href="#contact" class="btn btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          Liên hệ với mình
+        </a>
+        <a href="https://github.com/tranlebaocuong/hoclaptrinh" target="_blank" rel="noopener noreferrer" class="btn btn-outline">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+          GitHub cá nhân
+        </a>
+      </div>
     </header>
 
-    <div class="intro-grid">
-      <section class="card">
-        <h2>Về mình</h2>
-        <p>Họ và Tên: Trần Lê Bảo Cường</p>
-        <p>giới tính: Nam</p>
-        <p>Tuổi: 27</p>
-        <p>Sở Thích: Công nghệ và lập trình, thể thao, đọc sách</p>
-        <p>mình đang tự học các ngôn ngữ như: 
-            <span class="highlight">Python, HTML/CSS và JavaScript.</p> 
-        <p>Mình thích xây dựng các trang web cá nhân, ứng dụng nhỏ
-             và thử nghiệm các ý tưởng mới với ngôn ngữ lập trình.</p>
+    <!-- Nội dung chính -->
+    <main>
+      <div class="intro-grid">
+        <!-- Về mình -->
+        <section class="card card-profile">
+          <div class="card-header">
+            <span class="card-icon">👤</span>
+            <h2>Về mình</h2>
+          </div>
+          <ul class="info-list">
+            <li><strong>Họ và tên:</strong> Trần Lê Bảo Cường</li>
+            <li><strong>Năm sinh:</strong> 1999 (27 tuổi)</li>
+            <li><strong>Định hướng:</strong> Lập trình Web (Frontend) &amp; Ứng dụng Python</li>
+            <li><strong>Sở thích:</strong> Công nghệ &amp; lập trình, đọc sách, thể thao rèn luyện sức khỏe</li>
+          </ul>
+          <p class="profile-quote">
+            "Mỗi ngày tự học một chút kiến thức mới, thử nghiệm thêm một ý tưởng mới và kiên trì rèn luyện tư duy logic."
+          </p>
+        </section>
+
+        <!-- Học vấn & Lộ trình -->
+        <section class="card card-education">
+          <div class="card-header">
+            <span class="card-icon">🎓</span>
+            <h2>Học vấn &amp; Lộ trình</h2>
+          </div>
+          <div class="timeline-item">
+            <h4>Tốt nghiệp Trung học Phổ thông</h4>
+            <p class="timeline-meta">Nền tảng căn bản</p>
+          </div>
+          <div class="timeline-item">
+            <h4>Hành trình Tự học Lập trình (Self-Taught)</h4>
+            <p class="timeline-meta">2026 - Hiện tại • Chủ động &amp; Kiên trì</p>
+            <p>Học tập qua tài liệu chuẩn (MDN Web Docs, W3Schools, Python Documentation), kết hợp thực hành giải bài tập và xây dựng sản phẩm nhỏ.</p>
+          </div>
+        </section>
+      </div>
+
+      <!-- Kỹ năng -->
+      <section class="card skills-card">
+        <div class="card-header">
+          <span class="card-icon">⚡</span>
+          <h2>Kỹ năng &amp; Công nghệ</h2>
+        </div>
+        
+        <div class="skills-group">
+          <h3 class="skills-category-title">Ngôn ngữ &amp; Giao diện Web</h3>
+          <div class="skills">
+            <span class="skill-item skill-html" title="Xây dựng cấu trúc web chuẩn Semantic">HTML5</span>
+            <span class="skill-item skill-css" title="Tạo kiểu, bố cục Flexbox/Grid và Responsive">CSS3</span>
+            <span class="skill-item skill-js" title="Xử lý tương tác giao diện và sự kiện DOM">JavaScript (ES6+)</span>
+            <span class="skill-item skill-python" title="Xử lý dữ liệu, logic giải thuật và ứng dụng">Python</span>
+          </div>
+        </div>
+
+        <div class="skills-group">
+          <h3 class="skills-category-title">Công cụ &amp; Kỹ năng bổ trợ</h3>
+          <div class="skills">
+            <span class="skill-item">Git &amp; GitHub</span>
+            <span class="skill-item">VS Code</span>
+            <span class="skill-item">Responsive Design</span>
+            <span class="skill-item">Tự học &amp; Tra cứu tài liệu</span>
+            <span class="skill-item">Tư duy giải quyết vấn đề</span>
+          </div>
+        </div>
       </section>
 
-      <section class="card">
-        <h2>Học vấn</h2>
-        <ul>
-          <li>tốt nghiệp trung học phổ thông</li>
+      <!-- Các dự án & Bài tập thực hành tiêu biểu -->
+      <section class="card projects-card">
+        <div class="card-header">
+          <span class="card-icon">💻</span>
+          <h2>Dự án &amp; Thực hành nổi bật</h2>
+        </div>
+        <p class="section-desc">Các sản phẩm mình đã tự tay viết mã trong quá trình tự học:</p>
+        
+        <div class="projects-grid">
+          <article class="project-box">
+            <div class="project-title-row">
+              <h3>Trang Giới thiệu Bản thân</h3>
+              <span class="project-tag">HTML / CSS / JS</span>
+            </div>
+            <p>Trang web cá nhân responsive, hỗ trợ chế độ Sáng/Tối, tối ưu hiển thị trên mọi thiết bị và tích hợp hiệu ứng tương tác mượt mà.</p>
+          </article>
+
+          <article class="project-box">
+            <div class="project-title-row">
+              <h3>Hệ thống Bài tập &amp; Ứng dụng Python</h3>
+              <span class="project-tag">Python Core</span>
+            </div>
+            <p>Tập hợp các module thực hành: Tính tiền điện &amp; hóa đơn, chuyển đổi đơn vị/tiền tệ, cấu trúc dữ liệu Dictionary/List, mini game tương tác và quản lý danh sách nhạc JSON.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- Điểm mạnh -->
+      <section class="card strengths-card">
+        <div class="card-header">
+          <span class="card-icon">🌟</span>
+          <h2>Điểm mạnh của mình</h2>
+        </div>
+        <ul class="strengths-list">
+          <li>
+            <strong>Tinh thần chủ động &amp; kiên trì:</strong> Có khả năng tự đọc tài liệu, tìm kiếm lời giải và kiên nhẫn sửa lỗi (debug) đến khi hoàn thiện.
+          </li>
+          <li>
+            <strong>Tập trung vào tính thực tế:</strong> Không chỉ học lý thuyết suông, mình luôn áp dụng ngay vào từng dự án nhỏ để hiểu sâu bản chất.
+          </li>
+          <li>
+            <strong>Cẩn thận và chú ý chi tiết:</strong> Luôn muốn viết mã sạch sẽ, trình bày giao diện gọn gàng, thân thiện và đem lại trải nghiệm tốt cho người dùng.
+          </li>
+          <li>
+            <strong>Tư duy cởi mở:</strong> Sẵn sàng học hỏi công nghệ mới, đón nhận góp ý từ mọi người để tiến bộ mỗi ngày.
+          </li>
         </ul>
       </section>
 
-      <section class="card">
-        <h2>Kỹ năng</h2>
-        <div class="skills">
-          <span class="skill-item">HTML</span>
-          <span class="skill-item">CSS</span>
-          <span class="skill-item">JavaScript</span>
-          <span class="skill-item">Python</span>
-          <span class="skill-item">Git</span>
-          <span class="skill-item">Responsive</span>
+      <!-- Liên hệ -->
+      <section class="card contact-card" id="contact">
+        <div class="card-header">
+          <span class="card-icon">📬</span>
+          <h2>Kết nối với mình</h2>
+        </div>
+        <p>Mình rất vui khi được giao lưu, học hỏi kinh nghiệm từ các anh chị và bạn bè trong ngành công nghệ:</p>
+        
+        <div class="contact-methods">
+          <div class="contact-item">
+            <span class="contact-label">Email:</span>
+            <a href="mailto:tranc3190@gmail.com" class="contact-value" id="emailText">tranc3190@gmail.com</a>
+            <button class="copy-btn" id="copyEmailBtn" title="Sao chép địa chỉ email">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>Sao chép</span>
+            </button>
+          </div>
+          <div class="contact-item">
+            <span class="contact-label">Mã nguồn:</span>
+            <a href="https://github.com/tranlebaocuong/hoclaptrinh" target="_blank" rel="noopener noreferrer" class="contact-link">
+              github.com/tranlebaocuong/hoclaptrinh ↗
+            </a>
+          </div>
+        </div>
+
+        <div class="contact-actions">
+          <button class="action-button" id="toggleInfoBtn" aria-expanded="false">
+            <span>Mục tiêu &amp; Định hướng tiếp theo</span>
+            <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+        </div>
+
+        <div class="info-box" id="extraInfo" aria-hidden="true">
+          <div class="info-content-block">
+            <h4>🎯 Mục tiêu ngắn hạn:</h4>
+            <p>Nắm vững JavaScript chuyên sâu, thành thạo xây dựng các giao diện web tương tác mượt mà và làm quen với một Framework hiện đại.</p>
+          </div>
+          <div class="info-content-block">
+            <h4>🚀 Mục tiêu dài hạn:</h4>
+            <p>Trở thành một lập trình viên có năng lực thực chiến vững vàng, có thể tự tay phát triển các sản phẩm web hoàn chỉnh từ giao diện đến xử lý dữ liệu backend.</p>
+          </div>
+          <div class="info-content-block">
+            <h4>💡 Triết lý làm việc:</h4>
+            <p>"Thành công là kết quả của sự chuẩn bị, làm việc chăm chỉ và không ngừng rút kinh nghiệm từ những lỗi sai."</p>
+          </div>
         </div>
       </section>
-    </div>
+    </main>
 
-    <section class="card">
-      <h2>Điểm mạnh</h2>
-      <ul>
-        <li>Kỹ năng tự học và chủ động tìm giải pháp mới.</li>
-        <li>Khả năng trình bày ý tưởng rõ ràng và tạo giao diện thân thiện.</li>
-        <li>Thích hợp tác nhóm và hoàn thiện sản phẩm nhanh.</li>
-      </ul>
-    </section>
-
-    <section class="card" style="margin-top: 1.5rem;">
-      <h2>Liên hệ</h2>
-      <p>Nếu bạn muốn kết nối, hãy gửi email tới <strong>tranc3190@gmail.com</strong> hoặc ghé thăm trang GitHub của mình.</p>
-      <button class="action-button" id="toggleInfoBtn">Xem thêm thông tin</button>
-      <div class="info-box" id="extraInfo">
-        <p><strong>Cảm hứng:</strong> Mình luôn mong muốn học hỏi mỗi ngày và tạo ra sản phẩm nhỏ có thể giúp cuộc sống trở nên thú vị hơn.</p>
-        <p><strong>Mục tiêu tiếp theo:</strong> tạo ra các dự án web tương tác và tự động hóa lặp lại với JavaScript.</p>
-      </div>
-    </section>
-
+    <!-- Footer -->
     <footer>
-      <p>File mẫu giới thiệu bản thân bằng HTML + CSS với nền trắng, chữ đen và hoa văn nền nhẹ nhàng.</p>
+      <p>© 2026 <strong>Trần Lê Bảo Cường</strong> • Xây dựng với HTML5, CSS3 &amp; JavaScript thuần.</p>
+      <p class="footer-note">"Hành trình vạn dặm bắt đầu từ một bước chân."</p>
     </footer>
   </div>
+
+  <!-- Thông báo Toast khi sao chép email -->
+  <div class="toast" id="toast" role="alert" aria-live="polite">Đã sao chép email vào bộ nhớ tạm!</div>
+
   <script src="gioi-thieu.js"></script>
 </body>
 </html>
